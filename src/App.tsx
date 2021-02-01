@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
+import Timer from './Timer';
 import './App.css';
 
 interface AppProps {}
@@ -15,6 +16,7 @@ function App({}: AppProps) {
   // Return the App component.
   return (
     <div className="App">
+      <Timer />
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>

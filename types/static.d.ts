@@ -57,3 +57,6 @@ declare module '*.png' {
 }
 
 /* CUSTOM: ADD YOUR OWN HERE */
+
+/* AUDIO */
+declare module '*.wav';
