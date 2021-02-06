@@ -5,6 +5,8 @@ import './App.css';
 
 interface AppProps {}
 
+const defaultTime = 1500;
+
 function App({}: AppProps) {
   // Create the count state.
   const [count, setCount] = useState(0);
@@ -16,7 +18,7 @@ function App({}: AppProps) {
   // Return the App component.
   return (
     <div className="App">
-      <Timer />
+      <Timer initialTime={defaultTime} />
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
