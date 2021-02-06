@@ -10,7 +10,7 @@ interface TimerProps {
   initialTime: number;
 }
 
-const Timer: React.FC<TimerProps> = ({ initialTime }) => {
+function Timer({ initialTime }: TimerProps) {
   const [timer, setTimer] = useState<number>(initialTime);
 
   useEffect(() => {
@@ -28,6 +28,6 @@ const Timer: React.FC<TimerProps> = ({ initialTime }) => {
       <button>stop</button>
     </div>
   );
-};
+}
 
 export default Timer;
