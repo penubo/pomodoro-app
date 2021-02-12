@@ -12,20 +12,29 @@ interface TimerProps {
 
 function Timer({ initialTime }: TimerProps) {
   const [timer, setTimer] = useState<number>(initialTime);
+  const [ticking, setTicking] = useState<boolean>(false);
+
+  const handleStart = () => {
+    setTicking((p) => !p);
+  };
+  const handleStop = () => {
+    setTicking((p) => !p);
+  };
 
   useEffect(() => {
     let timerInterval: NodeJS.Timeout | null = null;
-    if (timer > 0) {
+    if (ticking === true && timer > 0) {
       timerInterval = setTimeout(() => setTimer(timer - 1), 1000);
     }
-    if (timerInterval) return () => clearTimeout(timerInterval!);
-  }, [timer, setTimer]);
+    if (ticking === false || timerInterval)
+      return () => clearTimeout(timerInterval!);
+  }, [timer, setTimer, ticking]);
 
   return (
     <div>
       <span aria-label="timer">{convertTimeFormat(timer)}</span>
-      <button>start</button>
-      <button>stop</button>
+      <button onClick={handleStart}>start</button>
+      <button onClick={handleStop}>stop</button>
     </div>
   );
 }
