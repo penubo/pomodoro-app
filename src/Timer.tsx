@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 function convertTimeFormat(sec: number) {
   const m = String(Math.floor(sec / 60)).padStart(2, '0');
@@ -13,22 +13,16 @@ interface TimerProps {
 function Timer({ initialTime }: TimerProps) {
   const [timer, setTimer] = useState<number>(initialTime);
   const [ticking, setTicking] = useState<boolean>(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleStart = () => {
     setTicking((p) => !p);
+    timerRef.current = setInterval(() => setTimer((t) => t - 1), 1000);
   };
   const handleStop = () => {
     setTicking((p) => !p);
+    if (timerRef.current) clearInterval(timerRef.current);
   };
-
-  useEffect(() => {
-    let timerInterval: NodeJS.Timeout | null = null;
-    if (ticking === true && timer > 0) {
-      timerInterval = setTimeout(() => setTimer(timer - 1), 1000);
-    }
-    if (ticking === false || timerInterval)
-      return () => clearTimeout(timerInterval!);
-  }, [timer, setTimer, ticking]);
 
   return (
     <div>

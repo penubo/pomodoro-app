@@ -9,7 +9,7 @@ describe('Timer Test', () => {
   let clock: SinonFakeTimers;
 
   beforeEach(() => {
-    clock = useFakeTimers();
+    clock = useFakeTimers({ shouldAdvanceTime: true });
   });
 
   afterEach(() => {
@@ -43,25 +43,38 @@ describe('Timer Test', () => {
     expect(timer.innerText).to.equal('25:00');
   });
 
-  it('should start ticking after press start button', async () => {
+  it('should start ticking after press start button', () => {
     render(<Timer initialTime={1500} />);
     const startButton = screen.getByRole('button', { name: 'start' });
     userEvent.click(startButton);
     const timer: HTMLSpanElement = screen.getByLabelText('timer');
     clock.tick('00:01');
-    await waitFor(() => expect(timer.innerText).to.equal('24:59'));
+    expect(timer.innerText).to.equal('24:59');
   });
 
-  it('should stop ticking after press stop button', async () => {
+  it('should stop ticking after press stop button', () => {
     render(<Timer initialTime={1500} />);
     const startButton = screen.getByRole('button', { name: 'start' });
     const stopButton = screen.getByRole('button', { name: 'stop' });
     userEvent.click(startButton);
     const timer: HTMLSpanElement = screen.getByLabelText('timer');
     clock.tick('00:01');
-    await waitFor(() => expect(timer.innerText).to.equal('24:59'));
+    expect(timer.innerText).to.equal('24:59');
     userEvent.click(stopButton);
     clock.tick('00:01');
     expect(timer.innerText).to.equal('24:59');
+  });
+
+  it('should render break timer after one pomodoro done', () => {
+    const { debug } = render(<Timer initialTime={1500} />);
+    const startButton = screen.getByRole('button', {
+      name: 'start',
+    });
+    debug();
+    userEvent.click(startButton);
+    clock.tick('25:00');
+    const timer: HTMLSpanElement = screen.getByLabelText('timer');
+    debug();
+    expect(timer.innerText).to.equal('05:00');
   });
 });
