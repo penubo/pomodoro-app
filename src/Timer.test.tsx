@@ -11,6 +11,7 @@ describe('Timer Test', () => {
   beforeEach(() => {
     clock = useFakeTimers();
   });
+
   afterEach(() => {
     clock.restore();
   });
@@ -20,16 +21,19 @@ describe('Timer Test', () => {
     screen.getByRole('button', { name: 'start' });
     screen.getByRole('button', { name: 'stop' });
   });
+
   it('should render timer', () => {
     render(<Timer initialTime={1500} />);
     screen.getByLabelText('timer');
   });
+
   it('should render time as HH:MM format by given time', () => {
     render(<Timer initialTime={1500} />);
     const timer: HTMLSpanElement = screen.getByLabelText('timer');
     // 1500sec == 25min 00sec
     expect(timer.innerText).to.equal('25:00');
   });
+
   it('should not ticking pomodoro time unless user clicks start button', async () => {
     render(<Timer initialTime={1500} />);
 
@@ -38,6 +42,7 @@ describe('Timer Test', () => {
     // wait for one second
     expect(timer.innerText).to.equal('25:00');
   });
+
   it('should start ticking after press start button', async () => {
     render(<Timer initialTime={1500} />);
     const startButton = screen.getByRole('button', { name: 'start' });
@@ -46,6 +51,7 @@ describe('Timer Test', () => {
     clock.tick('00:01');
     await waitFor(() => expect(timer.innerText).to.equal('24:59'));
   });
+
   it('should stop ticking after press stop button', async () => {
     render(<Timer initialTime={1500} />);
     const startButton = screen.getByRole('button', { name: 'start' });
