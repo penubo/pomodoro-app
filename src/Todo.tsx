@@ -1,12 +1,12 @@
 import React from 'react';
 
-type TodoItem = {
+export type TodoItem = {
   id: number;
   title: string;
   sprint: number;
 };
 
-type TodoList = Array<TodoItem>;
+export type TodoList = Array<TodoItem>;
 
 function Todo({ todos }: { todos: TodoList }) {
   return (
@@ -14,7 +14,7 @@ function Todo({ todos }: { todos: TodoList }) {
       <ul>
         {todos.map((todoItem) => (
           <li key={todoItem.id} aria-label="todo item">
-            {todoItem.title}
+            <span>{todoItem.title}</span>
           </li>
         ))}
       </ul>
