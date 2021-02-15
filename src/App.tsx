@@ -9,7 +9,7 @@ function App({}: AppProps) {
   return (
     <div className="App">
       <TimerPage />
-      <Todo />
+      <Todo todos={[{ id: 0, title: 'This is example of todo', sprint: 3 }]} />
     </div>
   );
 }

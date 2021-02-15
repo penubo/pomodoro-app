@@ -18,6 +18,7 @@ describe('Todo Test', () => {
     const todoComponents = screen.getAllByLabelText(/todo item/i);
     expect(todoComponents.length).to.equal(3);
   });
+
   it('should render title of todo lists', () => {
     const todo1 = todoBuilder();
     const todo2 = todoBuilder();
@@ -25,5 +26,14 @@ describe('Todo Test', () => {
     render(<Todo todos={todos} />);
     expect(screen.getByText(todo1.title)).to.be.exist;
     expect(screen.getByText(todo2.title)).to.be.exist;
+  });
+
+  it('should render pomodoro sprint of todo lists', () => {
+    const todo1 = todoBuilder();
+    const todo2 = todoBuilder();
+    const todos = [todo1, todo2];
+    render(<Todo todos={todos} />);
+    expect(screen.getByText(todo1.sprint)).to.be.exist;
+    expect(screen.getByText(todo1.sprint)).to.be.exist;
   });
 });
