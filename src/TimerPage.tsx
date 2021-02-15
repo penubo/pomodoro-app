@@ -9,9 +9,9 @@ function TimerPage() {
   return (
     <div>
       <TimerProvider>
+        <Timer initialTime={1500} />
         <TimerStartButton />
         <TimerStopButton />
-        <Timer initialTime={1500} />
       </TimerProvider>
     </div>
   );
