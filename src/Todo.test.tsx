@@ -34,6 +34,6 @@ describe('Todo Test', () => {
     const todos = [todo1, todo2];
     render(<Todo todos={todos} />);
     expect(screen.getByText(todo1.sprint)).to.be.exist;
-    expect(screen.getByText(todo1.sprint)).to.be.exist;
+    expect(screen.getByText(todo2.sprint)).to.be.exist;
   });
 });
