@@ -17,7 +17,7 @@ describe('TimerPage Test', () => {
 
   it('should render controller for setting sprint of new todo', () => {
     render(<TimerPage />);
-    screen.getByLabelText(/sprint-selection/i);
+    screen.getByRole('spinbutton', { name: /todo-sprint/i });
     screen.getByRole('button', { name: /sprint-set-up/i });
     screen.getByRole('button', { name: /sprint-set-down/i });
   });
@@ -30,20 +30,24 @@ describe('TimerPage Test', () => {
     const sprintDownButton = screen.getByRole('button', {
       name: /sprint-set-down/i,
     });
-    const sprintSelection = screen.getByLabelText(/sprint-selection/i);
-    console.dir(sprintUpButton);
+    const sprintSelection = screen.getByRole('spinbutton', {
+      name: /todo-sprint/i,
+    }) as HTMLInputElement;
+    console.dir(sprintSelection);
     userEvent.click(sprintUpButton);
-    expect(sprintSelection.innerText).to.equal('1');
+    expect(sprintSelection.value).to.equal('1');
     userEvent.click(sprintDownButton);
-    expect(sprintSelection.innerText).to.equal('0');
+    expect(sprintSelection.value).to.equal('0');
   });
 
-  it.skip('should add new todo item when fill the title, sprint and clicks new button', () => {
+  it('should add new todo item when fill the title, sprint and clicks new button', () => {
     render(<TimerPage />);
     const newTitle = 'newTitle';
     const newButton = screen.getByRole('button', { name: /new/i });
     const titleInput = screen.getByRole('textbox', { name: /todo-title/i });
-    const sprintUpButton = screen.getByLabelText(/sprint-set-up/i);
+    const sprintUpButton = screen.getByRole('spinbutton', {
+      name: /todo-sprint/i,
+    });
     userEvent.type(titleInput, newTitle);
     userEvent.click(sprintUpButton);
     userEvent.click(newButton);

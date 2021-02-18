@@ -15,7 +15,7 @@ describe('Todo Test', () => {
   it('should render correct amount of todo lists', () => {
     const todos = [todoBuilder(), todoBuilder(), todoBuilder()];
     render(<Todo todos={todos} />);
-    const todoComponents = screen.getAllByLabelText(/todo item/i);
+    const todoComponents = screen.getAllByLabelText(/todo-item/i);
     expect(todoComponents.length).to.equal(3);
   });
 

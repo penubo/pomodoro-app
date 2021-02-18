@@ -13,7 +13,7 @@ function Todo({ todos = [] }: { todos: TodoList }) {
     <div>
       <ul>
         {todos.map((todoItem) => (
-          <li key={todoItem.id} aria-label="todo item">
+          <li key={todoItem.id} aria-label="todo-item">
             <span>{todoItem.title}</span>
             <span>{todoItem.sprint}</span>
           </li>
