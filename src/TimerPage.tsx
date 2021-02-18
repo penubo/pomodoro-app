@@ -9,11 +9,11 @@ import Todo, { TodoItem } from './Todo';
 function TimerPage() {
   const [sprintSelection, setSprintSelection] = useState<number>(0);
   const [todos, setTodos] = useState<Array<TodoItem>>([]);
-  const handleSprintUp = (e: MouseEvent) => {
+  const handleSprintUp = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     setSprintSelection((s) => s + 1);
   };
-  const handleSprintDown = (e: MouseEvent) => {
+  const handleSprintDown = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     setSprintSelection((s) => s - 1);
   };
