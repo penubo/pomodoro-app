@@ -6,7 +6,8 @@ import Timer, {
   TimerStopButton,
 } from './Timer';
 import Todo, { TodoItem } from './Todo';
-import './TimerPage.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
 const SHORT_BREAK = 300;
 const LONG_BREAK = 900;
@@ -82,14 +83,14 @@ function TimerPage() {
           aria-label="increase sprint"
           onClick={handleSprintUp}
         >
-          up
+          <FontAwesomeIcon icon={faCaretUp} />
         </button>
         <button
           id="sprint-down"
           aria-label="decrease sprint"
           onClick={handleSprintDown}
         >
-          down
+          <FontAwesomeIcon icon={faCaretDown} />
         </button>
       </form>
     </div>

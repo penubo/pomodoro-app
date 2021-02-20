@@ -8,7 +8,6 @@ function App({}: AppProps) {
   return (
     <div className="App">
       <TimerPage />
-      <span>hello world </span>
     </div>
   );
 }
