@@ -85,11 +85,7 @@ describe('TimerPage Test', () => {
       name: 'start',
     });
     userEvent.click(startButton);
-    for (let i = 0; i < 1500; i++) {
-      act(() => {
-        clock.tick('00:01');
-      });
-    }
+    passWorkTime();
     // should query timer after time passed because it is re mounted using key props
     const breakingTimer = screen.getByLabelText(/timer/i);
     expect(breakingTimer.innerText).to.equal('05:00');
