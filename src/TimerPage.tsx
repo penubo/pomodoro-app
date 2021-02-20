@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { useState } from 'react';
 import Timer, {
   TimerContainer,
   TimerProvider,
@@ -6,6 +6,7 @@ import Timer, {
   TimerStopButton,
 } from './Timer';
 import Todo, { TodoItem } from './Todo';
+import './TimerPage.scss';
 
 const SHORT_BREAK = 300;
 const LONG_BREAK = 900;
@@ -66,19 +67,30 @@ function TimerPage() {
       <Todo todos={todos} />
       <form onSubmit={createNewTodo}>
         <button type="submit">new</button>
-        <label htmlFor="todo-title">todo-title</label>
-        <input id="todo-title" name="title" />
-        <label htmlFor="todo-sprint">todo-sprint</label>
+        <input id="todo-title" aria-label="title for new todo" name="title" />
         <input
           id="todo-sprint"
+          aria-label="amount of sprint for new todo"
           name="sprint"
           type="number"
           step={1}
           value={sprintSelection}
           onChange={handleSprintChange}
         />
-        <button onClick={handleSprintUp}> sprint-set-up </button>
-        <button onClick={handleSprintDown}> sprint-set-down </button>
+        <button
+          id="sprint-up"
+          aria-label="increase sprint"
+          onClick={handleSprintUp}
+        >
+          up
+        </button>
+        <button
+          id="sprint-down"
+          aria-label="decrease sprint"
+          onClick={handleSprintDown}
+        >
+          down
+        </button>
       </form>
     </div>
   );
