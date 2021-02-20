@@ -1,4 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
+import './Timer.scss';
 
 function convertTimeFormat(sec: number) {
   const m = String(Math.floor(sec / 60)).padStart(2, '0');
@@ -59,7 +60,7 @@ function Timer({ initialTime, onTimeEnd }: TimerProps) {
   }, [timer, setTimer, working]);
 
   return (
-    <div>
+    <div className="Timer">
       <span aria-label="timer">{convertTimeFormat(timer)}</span>
     </div>
   );
