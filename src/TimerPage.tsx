@@ -1,5 +1,6 @@
 import React, { FormEvent, useState } from 'react';
 import Timer, {
+  TimerContainer,
   TimerProvider,
   TimerStartButton,
   TimerStopButton,
@@ -56,9 +57,11 @@ function TimerPage() {
   return (
     <div>
       <TimerProvider>
-        <Timer key={timer} initialTime={timer} onTimeEnd={handleTimerEnd} />
-        <TimerStartButton />
-        <TimerStopButton />
+        <TimerContainer>
+          <Timer key={timer} initialTime={timer} onTimeEnd={handleTimerEnd} />
+          <TimerStartButton style={{ margin: '1rem' }} />
+          <TimerStopButton style={{ margin: '1rem' }} />
+        </TimerContainer>
       </TimerProvider>
       <Todo todos={todos} />
       <form onSubmit={createNewTodo}>

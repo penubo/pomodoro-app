@@ -66,16 +66,39 @@ function Timer({ initialTime, onTimeEnd }: TimerProps) {
   );
 }
 
-function TimerStartButton() {
+function TimerStartButton({
+  ...props
+}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const { start } = useTimer();
 
-  return <button onClick={start}> start </button>;
+  return (
+    <button {...props} className="Button" onClick={start}>
+      start
+    </button>
+  );
 }
 
-function TimerStopButton() {
+function TimerStopButton({
+  ...props
+}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const { stop } = useTimer();
 
-  return <button onClick={stop}> stop </button>;
+  return (
+    <button {...props} className="Button" onClick={stop}>
+      stop
+    </button>
+  );
 }
+
+function TimerContainer({ children }: { children: React.ReactNode }) {
+  return <div className="TimerContainer">{children}</div>;
+}
+
 export default Timer;
-export { TimerProvider, TimerStartButton, TimerStopButton, useTimer };
+export {
+  TimerProvider,
+  TimerStartButton,
+  TimerStopButton,
+  TimerContainer,
+  useTimer,
+};
