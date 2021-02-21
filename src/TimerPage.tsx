@@ -5,7 +5,7 @@ import Timer, {
   TimerStartButton,
   TimerStopButton,
 } from './Timer';
-import Todo, { TodoItem } from './Todo';
+import Todo from './Todo';
 import TodoFormProvider, {
   DecreaseSprintButton,
   EstimationSprintInput,
@@ -14,6 +14,7 @@ import TodoFormProvider, {
   TitleField,
 } from './TodoForm';
 import type { TodoFormState } from 'types/todoform';
+import type { TodoItem } from 'types/todo';
 
 const SHORT_BREAK = 300;
 const LONG_BREAK = 900;

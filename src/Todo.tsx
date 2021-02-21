@@ -1,12 +1,5 @@
 import React from 'react';
-
-export type TodoItem = {
-  id: number;
-  title: string;
-  sprintTotal: number;
-};
-
-export type TodoList = Array<TodoItem>;
+import type { TodoList } from 'types/todo';
 
 function Todo({ todos = [] }: { todos: TodoList }) {
   return (
