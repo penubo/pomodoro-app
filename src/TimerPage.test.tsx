@@ -105,4 +105,18 @@ describe('TimerPage Test', () => {
     const longBreakingTimer = screen.getByLabelText(/timer/i);
     expect(longBreakingTimer.innerText).to.equal('15:00');
   });
+
+  it('should reset all todo-forms after submit a new Todo', () => {
+    render(<TimerPage />);
+    const newTitle = 'newTitle';
+    const newButton = screen.getByRole('button', { name: /new/i });
+    const titleInput = screen.getByLabelText(/title for new todo/i);
+    const sprintInput = screen.getByLabelText(/amount of sprint for new todo/i);
+    const sprintUpButton = screen.getByLabelText(/increase sprint/i);
+    userEvent.type(titleInput, newTitle);
+    userEvent.click(sprintUpButton);
+    userEvent.click(newButton);
+    expect(titleInput.textContent).to.equal('');
+    expect(sprintInput.textContent).to.equal('');
+  });
 });

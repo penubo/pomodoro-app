@@ -9,7 +9,8 @@ type TodoFormAction =
   | { type: 'increase-sprint' }
   | { type: 'decrease-sprint' }
   | { type: 'new-sprint'; sprint: number }
-  | { type: 'edit-title'; newTitle: string };
+  | { type: 'edit-title'; newTitle: string }
+  | { type: 'reset' };
 
 type TodoFormContextValue = {
   form: TodoFormState;

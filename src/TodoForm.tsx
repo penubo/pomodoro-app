@@ -19,6 +19,8 @@ function formReducer(state: TodoFormState, action: TodoFormAction) {
       return { ...state, sprint: action.sprint };
     case 'edit-title':
       return { ...state, title: action.newTitle };
+    case 'reset':
+      return { title: '', sprint: 0 };
     default:
       throw new Error('no action type found in formReducer');
   }
@@ -37,6 +39,7 @@ function TodoFormProvider({
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     onSubmit(form);
+    dispatch({ type: 'reset' });
   };
   return (
     <TodoFormContext.Provider value={{ form, dispatch }}>
