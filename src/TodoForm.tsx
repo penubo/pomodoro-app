@@ -109,6 +109,7 @@ function IncreaseSprintButton() {
     <button
       id="sprint-up"
       aria-label="increase sprint"
+      type="button"
       onClick={handleSprintUp}
     >
       <FontAwesomeIcon icon={faCaretUp} />
@@ -125,6 +126,7 @@ function DecreaseSprintButton() {
     <button
       id="sprint-down"
       aria-label="decrease sprint"
+      type="button"
       onClick={handleSprintDown}
     >
       <FontAwesomeIcon icon={faCaretDown} />
