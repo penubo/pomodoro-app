@@ -98,6 +98,7 @@ function EstimationSprintInput() {
       name="sprint"
       type="number"
       step={1}
+      min={0}
       value={sprint}
       onChange={handleSprintChange}
     />
@@ -122,9 +123,12 @@ function IncreaseSprintButton() {
 }
 
 function DecreaseSprintButton() {
-  const { dispatch } = useTodoForm();
+  const {
+    form: { sprint },
+    dispatch,
+  } = useTodoForm();
   const handleSprintDown = () => {
-    dispatch({ type: 'decrease-sprint' });
+    if (sprint > 0) dispatch({ type: 'decrease-sprint' });
   };
   return (
     <button
