@@ -54,6 +54,10 @@ function TimerPage() {
     ]);
     return true;
   };
+
+  const handleChangeCurrentTodo = (newTodo: number) => {
+    setCurrentTodo(newTodo);
+  };
   return (
     <div>
       <TimerProvider>
@@ -63,7 +67,11 @@ function TimerPage() {
           <TimerStopButton style={{ margin: '1rem' }} />
         </TimerContainer>
       </TimerProvider>
-      <Todo todos={todos} />
+      <Todo
+        todos={todos}
+        currentTodo={currentTodo}
+        onChangeCurrentTodo={handleChangeCurrentTodo}
+      />
       <TodoFormProvider onSubmit={submitNewTodo}>
         <TitleField />
         <EstimationSprintInput />
