@@ -8,7 +8,7 @@ const todoBuilder = build<TodoItem>('Todo', {
   fields: {
     id: sequence(),
     title: fake((f) => f.name.title()),
-    sprint: fake((f) => f.random.number()),
+    sprintTotal: fake((f) => f.random.number()),
   },
 });
 describe('Todo Test', () => {
@@ -33,7 +33,7 @@ describe('Todo Test', () => {
     const todo2 = todoBuilder();
     const todos = [todo1, todo2];
     render(<Todo todos={todos} />);
-    expect(screen.getByText(todo1.sprint)).to.be.exist;
-    expect(screen.getByText(todo2.sprint)).to.be.exist;
+    expect(screen.getByText(todo1.sprintTotal)).to.be.exist;
+    expect(screen.getByText(todo2.sprintTotal)).to.be.exist;
   });
 });

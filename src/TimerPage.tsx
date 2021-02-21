@@ -23,6 +23,7 @@ function TimerPage() {
   const [timer, setTimer] = useState<number>(WORK_TIME);
   const [breaking, setBreaking] = useState<boolean>(false);
   const [round, setRound] = useState<number>(1);
+  const [currentTodo, setCurrentTodo] = useState<number | null>(null);
 
   const handleTimerEnd = () => {
     if (breaking) {
@@ -43,7 +44,7 @@ function TimerPage() {
     if (form.title === '' || form.sprint <= 0) return false;
     setTodos([
       ...todos,
-      { id: todos.length, title: form.title, sprint: form.sprint },
+      { id: todos.length, title: form.title, sprintTotal: form.sprint },
     ]);
     return true;
   };
