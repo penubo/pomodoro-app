@@ -1,3 +1,5 @@
+import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { createContext, Dispatch, useContext, useReducer } from 'react';
 
 type TodoFormState = {
@@ -36,14 +38,20 @@ function formReducer(state: TodoFormState, action: TodoFormAction) {
 function TodoFormProvider({
   children,
   initialForm = { title: '', sprint: 1 },
+  onSubmit,
 }: {
   children: React.ReactNode;
   initialForm: TodoFormState;
+  onSubmit: (form: TodoFormState) => boolean;
 }) {
   const [form, dispatch] = useReducer(formReducer, initialForm);
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    onSubmit(form);
+  };
   return (
     <TodoFormContext.Provider value={{ form, dispatch }}>
-      <form>{children}</form>
+      <form onSubmit={handleSubmit}>{children}</form>
     </TodoFormContext.Provider>
   );
 }
@@ -86,9 +94,37 @@ function EstimationSprintInput() {
   );
 }
 
-function IncreaseSprintButton() {}
+function IncreaseSprintButton() {
+  const { dispatch } = useTodoForm();
+  const handleSprintUp = () => {
+    dispatch({ type: 'increase-sprint' });
+  };
+  return (
+    <button
+      id="sprint-up"
+      aria-label="increase sprint"
+      onClick={handleSprintUp}
+    >
+      <FontAwesomeIcon icon={faCaretUp} />
+    </button>
+  );
+}
 
-function DecreaseSprintButton() {}
+function DecreaseSprintButton() {
+  const { dispatch } = useTodoForm();
+  const handleSprintDown = () => {
+    dispatch({ type: 'decrease-sprint' });
+  };
+  return (
+    <button
+      id="sprint-down"
+      aria-label="decrease sprint"
+      onClick={handleSprintDown}
+    >
+      <FontAwesomeIcon icon={faCaretDown} />
+    </button>
+  );
+}
 
 export default TodoFormProvider;
 export {
