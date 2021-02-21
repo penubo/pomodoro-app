@@ -74,6 +74,7 @@ function TitleField() {
     <input
       id="todo-title"
       aria-label="title for new todo"
+      placeholder="what will you do?"
       name="title"
       value={title}
       onChange={handleTitleChange}

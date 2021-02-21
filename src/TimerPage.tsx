@@ -58,11 +58,11 @@ function TimerPage() {
       </TimerProvider>
       <Todo todos={todos} />
       <TodoFormProvider onSubmit={submitNewTodo}>
-        <NewFormButton />
         <TitleField />
         <EstimationSprintInput />
         <IncreaseSprintButton />
         <DecreaseSprintButton />
+        <NewFormButton />
       </TodoFormProvider>
     </div>
   );
