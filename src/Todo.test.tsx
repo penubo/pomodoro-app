@@ -1,14 +1,16 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Todo, { TodoItem } from './Todo';
+import Todo from './Todo';
 import { build, fake, sequence } from '@jackfranklin/test-data-bot';
 import { expect } from 'chai';
+import type { TodoItem } from 'types/todo';
 
 const todoBuilder = build<TodoItem>('Todo', {
   fields: {
     id: sequence(),
     title: fake((f) => f.name.title()),
     sprintTotal: fake((f) => f.random.number()),
+    sprintEnded: 0,
   },
 });
 describe('Todo Test', () => {

@@ -45,7 +45,12 @@ function TimerPage() {
     if (form.title === '' || form.sprint <= 0) return false;
     setTodos([
       ...todos,
-      { id: todos.length, title: form.title, sprintTotal: form.sprint },
+      {
+        id: todos.length,
+        title: form.title,
+        sprintTotal: form.sprint,
+        sprintEnded: 0,
+      },
     ]);
     return true;
   };
