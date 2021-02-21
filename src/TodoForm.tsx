@@ -1,22 +1,11 @@
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { createContext, Dispatch, useContext, useReducer } from 'react';
-
-type TodoFormState = {
-  title: string;
-  sprint: number;
-};
-
-type TodoFormAction =
-  | { type: 'increase-sprint' }
-  | { type: 'decrease-sprint' }
-  | { type: 'new-sprint'; sprint: number }
-  | { type: 'edit-title'; newTitle: string };
-
-type TodoFormContextValue = {
-  form: TodoFormState;
-  dispatch: Dispatch<TodoFormAction>;
-};
+import React, { createContext, useContext, useReducer } from 'react';
+import type {
+  TodoFormAction,
+  TodoFormContextValue,
+  TodoFormState,
+} from 'types/todoform';
 
 const TodoFormContext = createContext<TodoFormContextValue | null>(null);
 
@@ -37,11 +26,11 @@ function formReducer(state: TodoFormState, action: TodoFormAction) {
 
 function TodoFormProvider({
   children,
-  initialForm = { title: '', sprint: 1 },
+  initialForm = { title: '', sprint: 0 },
   onSubmit,
 }: {
   children: React.ReactNode;
-  initialForm: TodoFormState;
+  initialForm?: TodoFormState;
   onSubmit: (form: TodoFormState) => boolean;
 }) {
   const [form, dispatch] = useReducer(formReducer, initialForm);
@@ -69,7 +58,24 @@ function NewFormButton() {
 }
 
 function TitleField() {
-  return <input id="todo-title" aria-label="title for new todo" name="title" />;
+  const {
+    form: { title },
+    dispatch,
+  } = useTodoForm();
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const newTitle = e.target.value;
+    dispatch({ type: 'edit-title', newTitle });
+  };
+  return (
+    <input
+      id="todo-title"
+      aria-label="title for new todo"
+      name="title"
+      value={title}
+      onChange={handleTitleChange}
+    />
+  );
 }
 
 function EstimationSprintInput() {

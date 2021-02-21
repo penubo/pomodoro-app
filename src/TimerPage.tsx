@@ -8,6 +8,14 @@ import Timer, {
 import Todo, { TodoItem } from './Todo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import TodoFormProvider, {
+  DecreaseSprintButton,
+  EstimationSprintInput,
+  IncreaseSprintButton,
+  NewFormButton,
+  TitleField,
+} from './TodoForm';
+import type { TodoFormState } from 'types/todoform';
 
 const SHORT_BREAK = 300;
 const LONG_BREAK = 900;
@@ -56,6 +64,14 @@ function TimerPage() {
       { id: todos.length, title: title.value, sprint: sprint.value },
     ]);
   };
+  const submitNewTodo = (form: TodoFormState) => {
+    if (form.title === '' || form.sprint <= 0) return false;
+    setTodos([
+      ...todos,
+      { id: todos.length, title: form.title, sprint: form.sprint },
+    ]);
+    return true;
+  };
   return (
     <div>
       <TimerProvider>
@@ -66,33 +82,13 @@ function TimerPage() {
         </TimerContainer>
       </TimerProvider>
       <Todo todos={todos} />
-      <form onSubmit={createNewTodo}>
-        <button type="submit">new</button>
-        <input id="todo-title" aria-label="title for new todo" name="title" />
-        <input
-          id="todo-sprint"
-          aria-label="amount of sprint for new todo"
-          name="sprint"
-          type="number"
-          step={1}
-          value={sprintSelection}
-          onChange={handleSprintChange}
-        />
-        <button
-          id="sprint-up"
-          aria-label="increase sprint"
-          onClick={handleSprintUp}
-        >
-          <FontAwesomeIcon icon={faCaretUp} />
-        </button>
-        <button
-          id="sprint-down"
-          aria-label="decrease sprint"
-          onClick={handleSprintDown}
-        >
-          <FontAwesomeIcon icon={faCaretDown} />
-        </button>
-      </form>
+      <TodoFormProvider onSubmit={submitNewTodo}>
+        <NewFormButton />
+        <TitleField />
+        <EstimationSprintInput />
+        <IncreaseSprintButton />
+        <DecreaseSprintButton />
+      </TodoFormProvider>
     </div>
   );
 }
