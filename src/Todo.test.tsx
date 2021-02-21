@@ -4,6 +4,8 @@ import Todo from './Todo';
 import { build, fake, sequence } from '@jackfranklin/test-data-bot';
 import { expect } from 'chai';
 import type { TodoItem } from 'types/todo';
+import userEvent from '@testing-library/user-event';
+import sinon from 'sinon';
 
 const todoBuilder = build<TodoItem>('Todo', {
   fields: {
@@ -39,5 +41,25 @@ describe('Todo Test', () => {
       .be.exist;
     expect(screen.getByText(`${todo2.sprintEnded} / ${todo2.sprintTotal}`)).to
       .be.exist;
+  });
+
+  it('should render selected icon when clicks todoItem', () => {
+    const todo1 = todoBuilder();
+    const todos = [todo1];
+    render(<Todo todos={todos} currentTodo={todo1.id} />);
+    expect(screen.getByLabelText(/selected/i)).to.exist;
+  });
+
+  it.skip('should call onChangeCurrentTodo handler when clicks a todo item', () => {
+    const todo1 = todoBuilder();
+    const todos = [todo1];
+    const changeCurrentTodoHandler = sinon.expectation.create(
+      'changeCurrentTodoHandler',
+    );
+    render(
+      <Todo todos={todos} onChangeCurrentTodo={changeCurrentTodoHandler} />,
+    );
+    userEvent.click(screen.getByText(todo1.title));
+    console.log(changeCurrentTodoHandler.exactly(2));
   });
 });
