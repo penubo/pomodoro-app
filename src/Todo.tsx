@@ -8,7 +8,7 @@ function Todo({ todos = [] }: { todos: TodoList }) {
         {todos.map((todoItem) => (
           <li key={todoItem.id} aria-label="todo-item">
             <span>{todoItem.title}</span>
-            <span>{todoItem.sprintTotal}</span>
+            <span>{`${todoItem.sprintEnded} / ${todoItem.sprintTotal}`}</span>
           </li>
         ))}
       </ul>

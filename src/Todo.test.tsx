@@ -35,7 +35,9 @@ describe('Todo Test', () => {
     const todo2 = todoBuilder();
     const todos = [todo1, todo2];
     render(<Todo todos={todos} />);
-    expect(screen.getByText(todo1.sprintTotal)).to.be.exist;
-    expect(screen.getByText(todo2.sprintTotal)).to.be.exist;
+    expect(screen.getByText(`${todo1.sprintEnded} / ${todo1.sprintTotal}`)).to
+      .be.exist;
+    expect(screen.getByText(`${todo2.sprintEnded} / ${todo2.sprintTotal}`)).to
+      .be.exist;
   });
 });
