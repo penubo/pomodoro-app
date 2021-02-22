@@ -50,16 +50,14 @@ describe('Todo Test', () => {
     expect(screen.getByLabelText(/selected/i)).to.exist;
   });
 
-  it.skip('should call onChangeCurrentTodo handler when clicks a todo item', () => {
+  it('should call onChangeCurrentTodo handler when clicks a todo item', () => {
     const todo1 = todoBuilder();
     const todos = [todo1];
-    const changeCurrentTodoHandler = sinon.expectation.create(
-      'changeCurrentTodoHandler',
-    );
+    const changeCurrentTodoHandler = sinon.spy();
     render(
       <Todo todos={todos} onChangeCurrentTodo={changeCurrentTodoHandler} />,
     );
     userEvent.click(screen.getByText(todo1.title));
-    console.log(changeCurrentTodoHandler.exactly(2));
+    expect(changeCurrentTodoHandler.calledOnceWithExactly(todo1.id)).to.true;
   });
 });

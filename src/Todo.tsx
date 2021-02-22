@@ -11,7 +11,6 @@ function Todo({
   currentTodo?: number | null;
 }) {
   const handleClickTodoItem = (newTodo: number) => () => {
-    console.error('clicked');
     if (onChangeCurrentTodo) onChangeCurrentTodo(newTodo);
   };
 
