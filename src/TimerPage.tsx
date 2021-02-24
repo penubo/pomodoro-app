@@ -38,6 +38,11 @@ function TimerPage() {
       }
       setBreaking(true);
       setRound((r) => r + 1);
+
+      if (currentTodo !== null) {
+        todos[currentTodo].sprintEnded += 1;
+        setTodos([...todos]);
+      }
     }
   };
 

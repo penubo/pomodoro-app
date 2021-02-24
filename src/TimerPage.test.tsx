@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import TimerPage from './TimerPage';
 import userEvent from '@testing-library/user-event';
 import { expect } from 'chai';
@@ -118,5 +118,23 @@ describe('TimerPage Test', () => {
     userEvent.click(newButton);
     expect(titleInput.textContent).to.equal('');
     expect(sprintInput.textContent).to.equal('');
+  });
+
+  it('should increase done count when one sprint is done', async () => {
+    render(<TimerPage />);
+    const newTitle = 'newTitle';
+    const newButton = screen.getByRole('button', { name: /new/i });
+    const titleInput = screen.getByLabelText(/title for new todo/i);
+    const sprintInput = screen.getByLabelText(/amount of sprint for new todo/i);
+    const sprintUpButton = screen.getByLabelText(/increase sprint/i);
+    userEvent.type(titleInput, newTitle);
+    userEvent.click(sprintUpButton);
+    userEvent.click(newButton);
+    userEvent.click(screen.getByText(newTitle));
+    expect(screen.getByText(/0 \/ 1/i));
+    const startButton = screen.getByRole('button', { name: 'start' });
+    userEvent.click(startButton);
+    passWorkTime(); // 1 session
+    await waitFor(() => expect(screen.getByText(/1 \/ 1/i)));
   });
 });
