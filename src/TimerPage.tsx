@@ -63,6 +63,11 @@ function TimerPage() {
   const handleChangeCurrentTodo = (newTodo: number) => {
     setCurrentTodo(newTodo);
   };
+
+  const handleDeleteTodo = (todoId: number) => {
+    setTodos((todos) => todos.filter((todo) => todo.id !== todoId));
+  };
+
   return (
     <div>
       <TimerProvider>
@@ -76,6 +81,7 @@ function TimerPage() {
         todos={todos}
         currentTodo={currentTodo}
         onChangeCurrentTodo={handleChangeCurrentTodo}
+        onDeleteTodo={handleDeleteTodo}
       />
       <TodoFormProvider onSubmit={submitNewTodo}>
         <TitleField />

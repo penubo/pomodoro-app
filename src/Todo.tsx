@@ -4,14 +4,20 @@ import type { TodoList } from 'types/todo';
 function Todo({
   todos = [],
   onChangeCurrentTodo,
+  onDeleteTodo,
   currentTodo = 0,
 }: {
   todos: TodoList;
   onChangeCurrentTodo?: (newTodo: number) => void;
+  onDeleteTodo?: (todo: number) => void;
   currentTodo?: number | null;
 }) {
   const handleClickTodoItem = (newTodo: number) => () => {
     if (onChangeCurrentTodo) onChangeCurrentTodo(newTodo);
+  };
+
+  const handleDelete = (todoId: number) => () => {
+    if (onDeleteTodo) onDeleteTodo(todoId);
   };
 
   return (
@@ -29,6 +35,7 @@ function Todo({
               )}
               <span>{todoItem.title}</span>
               <span>{`${todoItem.sprintEnded} / ${todoItem.sprintTotal}`}</span>
+              <button onClick={handleDelete(todoItem.id)}>delete</button>
             </div>
           </li>
         ))}
