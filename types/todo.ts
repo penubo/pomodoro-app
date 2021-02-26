@@ -3,6 +3,7 @@ type TodoItem = {
   title: string;
   sprintTotal: number;
   sprintEnded: number;
+  done: boolean;
 };
 
 type TodoList = Array<TodoItem>;

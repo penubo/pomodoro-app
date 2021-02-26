@@ -125,7 +125,6 @@ describe('TimerPage Test', () => {
     const newTitle = 'newTitle';
     const newButton = screen.getByRole('button', { name: /new/i });
     const titleInput = screen.getByLabelText(/title for new todo/i);
-    const sprintInput = screen.getByLabelText(/amount of sprint for new todo/i);
     const sprintUpButton = screen.getByLabelText(/increase sprint/i);
     userEvent.type(titleInput, newTitle);
     userEvent.click(sprintUpButton);
@@ -143,7 +142,6 @@ describe('TimerPage Test', () => {
     const newTitle = 'newTitle';
     const newButton = screen.getByRole('button', { name: /new/i });
     const titleInput = screen.getByLabelText(/title for new todo/i);
-    const sprintInput = screen.getByLabelText(/amount of sprint for new todo/i);
     const sprintUpButton = screen.getByLabelText(/increase sprint/i);
     userEvent.type(titleInput, newTitle);
     userEvent.click(sprintUpButton);
@@ -151,5 +149,19 @@ describe('TimerPage Test', () => {
     const deleteButton = screen.getByText(/delete/i);
     userEvent.click(deleteButton);
     expect(screen.queryByText(newTitle)).to.not.exist;
+  });
+
+  it('should render done when user clicks done button', () => {
+    render(<TimerPage />);
+    const newTitle = 'newTitle';
+    const newButton = screen.getByRole('button', { name: /new/i });
+    const titleInput = screen.getByLabelText(/title for new todo/i);
+    const sprintUpButton = screen.getByLabelText(/increase sprint/i);
+    userEvent.type(titleInput, newTitle);
+    userEvent.click(sprintUpButton);
+    userEvent.click(newButton);
+    const doneButton = screen.getByText(/done/i);
+    userEvent.click(doneButton);
+    expect(screen.getByLabelText(/todo done/i));
   });
 });

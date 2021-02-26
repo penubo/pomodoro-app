@@ -55,6 +55,7 @@ function TimerPage() {
         title: form.title,
         sprintTotal: form.sprint,
         sprintEnded: 0,
+        done: false,
       },
     ]);
     return true;
@@ -66,6 +67,11 @@ function TimerPage() {
 
   const handleDeleteTodo = (todoId: number) => {
     setTodos((todos) => todos.filter((todo) => todo.id !== todoId));
+  };
+
+  const handleDoneTodo = (todoId: number) => {
+    todos[todoId].done = true;
+    setTodos([...todos]);
   };
 
   return (
@@ -82,6 +88,7 @@ function TimerPage() {
         currentTodo={currentTodo}
         onChangeCurrentTodo={handleChangeCurrentTodo}
         onDeleteTodo={handleDeleteTodo}
+        onDoneTodo={handleDoneTodo}
       />
       <TodoFormProvider onSubmit={submitNewTodo}>
         <TitleField />
