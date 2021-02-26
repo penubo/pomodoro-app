@@ -70,7 +70,7 @@ function TimerPage() {
   };
 
   const handleDoneTodo = (todoId: number) => {
-    todos[todoId].done = true;
+    todos[todoId].done = !todos[todoId].done;
     setTodos([...todos]);
   };
 

@@ -151,7 +151,7 @@ describe('TimerPage Test', () => {
     expect(screen.queryByText(newTitle)).to.not.exist;
   });
 
-  it('should render done when user clicks done button', () => {
+  it('should render done when user clicks done button and it toggles', () => {
     render(<TimerPage />);
     const newTitle = 'newTitle';
     const newButton = screen.getByRole('button', { name: /new/i });
@@ -162,6 +162,8 @@ describe('TimerPage Test', () => {
     userEvent.click(newButton);
     const doneButton = screen.getByText(/done/i);
     userEvent.click(doneButton);
-    expect(screen.getByLabelText(/todo done/i));
+    expect(screen.getByLabelText(/todo done/i)).to.exist;
+    userEvent.click(doneButton);
+    expect(screen.queryByLabelText(/todo done/i)).to.not.exist;
   });
 });
