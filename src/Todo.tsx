@@ -28,7 +28,7 @@ function Todo({
   };
 
   const handleDone = (todoId: number) => (
-    e: React.MouseEvent<HTMLButtonElement>,
+    e: React.MouseEvent<HTMLDivElement>,
   ) => {
     e.stopPropagation();
     if (onDoneTodo) onDoneTodo(todoId);
@@ -45,7 +45,11 @@ function Todo({
               onClick={handleClickTodoItem(todoItem.id)}
             >
               <div className="todo-item-innerbox">
-                <div className="todo-done-box">
+                <div
+                  aria-label="todo finish switch"
+                  onClick={handleDone(todoItem.id)}
+                  className="todo-done-box"
+                >
                   {todoItem.done ? (
                     <span aria-label="todo done">🥳</span>
                   ) : (
@@ -65,7 +69,6 @@ function Todo({
               <button aria-label="delete" onClick={handleDelete(todoItem.id)}>
                 <FontAwesomeIcon icon={faTrashAlt} />
               </button>
-              <button onClick={handleDone(todoItem.id)}>done</button>
             </div>
           </li>
         ))}

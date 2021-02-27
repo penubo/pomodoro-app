@@ -160,10 +160,10 @@ describe('TimerPage Test', () => {
     userEvent.type(titleInput, newTitle);
     userEvent.click(sprintUpButton);
     userEvent.click(newButton);
-    const doneButton = screen.getByText(/done/i);
-    userEvent.click(doneButton);
+    const todoNotDoneIconButton = screen.getByLabelText(/todo finish switch/i);
+    userEvent.click(todoNotDoneIconButton);
     expect(screen.getByLabelText(/todo done/i)).to.exist;
-    userEvent.click(doneButton);
+    userEvent.click(todoNotDoneIconButton);
     expect(screen.queryByLabelText(/todo done/i)).to.not.exist;
   });
 });
