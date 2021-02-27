@@ -146,7 +146,7 @@ describe('TimerPage Test', () => {
     userEvent.type(titleInput, newTitle);
     userEvent.click(sprintUpButton);
     userEvent.click(newButton);
-    const deleteButton = screen.getByText(/delete/i);
+    const deleteButton = screen.getByLabelText(/delete/i);
     userEvent.click(deleteButton);
     expect(screen.queryByText(newTitle)).to.not.exist;
   });

@@ -9,3 +9,32 @@
   margin-top: 1rem;
   padding: .5rem 1rem
 }
+
+.todo-item-outerbox {
+  display: flex;
+  cursor: pointer;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.todo-item-innerbox {
+  display: flex;
+  flex:1;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.todo-done-box {
+  width: 1rem;
+  margin-right: .5rem;
+}
+
+.todo-selected-box {
+  width: 1rem;
+  margin-right: .5rem;
+
+}
+
+.todo-item-sprint {
+  margin-right: .5rem;
+}
