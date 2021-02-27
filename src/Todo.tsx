@@ -1,4 +1,5 @@
 import React from 'react';
+import './Todo.scss';
 import type { TodoList } from 'types/todo';
 
 interface TodoProps {
@@ -33,7 +34,7 @@ function Todo({
 
   return (
     <div>
-      <ul>
+      <ul className="todo-list">
         {todos.map((todoItem) => (
           <li key={todoItem.id} aria-label="todo-item">
             <div
