@@ -110,14 +110,18 @@ describe('TimerPage Test', () => {
     render(<TimerPage />);
     const newTitle = 'newTitle';
     const newButton = screen.getByRole('button', { name: /new/i });
-    const titleInput = screen.getByLabelText(/title for new todo/i);
-    const sprintInput = screen.getByLabelText(/amount of sprint for new todo/i);
+    const titleInput = screen.getByLabelText(
+      /title for new todo/i,
+    ) as HTMLInputElement;
+    const sprintInput = screen.getByLabelText(
+      /amount of sprint for new todo/i,
+    ) as HTMLInputElement;
     const sprintUpButton = screen.getByLabelText(/increase sprint/i);
     userEvent.type(titleInput, newTitle);
     userEvent.click(sprintUpButton);
     userEvent.click(newButton);
-    expect(titleInput.textContent).to.equal('');
-    expect(sprintInput.textContent).to.equal('');
+    expect(titleInput.value).to.equal('');
+    expect(sprintInput.value).to.equal('0');
   });
 
   it('should increase done count when one sprint is done', async () => {

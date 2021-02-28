@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import Todo from './Todo';
 import { build, fake, sequence } from '@jackfranklin/test-data-bot';
 import { expect } from 'chai';
@@ -13,6 +13,7 @@ const todoBuilder = build<TodoItem>('Todo', {
     title: fake((f) => f.name.title()),
     sprintTotal: fake((f) => f.random.number()),
     sprintEnded: 0,
+    done: fake((f) => f.random.boolean),
   },
 });
 describe('Todo Test', () => {
@@ -59,5 +60,22 @@ describe('Todo Test', () => {
     );
     userEvent.click(screen.getByText(todo1.title));
     expect(changeCurrentTodoHandler.calledOnceWithExactly(todo1.id)).to.true;
+  });
+
+  it('should render form when clicks edit button for a todo item', async () => {
+    const todo1 = todoBuilder();
+    render(<Todo todos={[todo1]} />);
+    userEvent.click(screen.getByText(/edit/i));
+    screen.getByRole('button', { name: /new/i });
+    screen.getByLabelText(/increase sprint/i);
+    screen.getByLabelText(/decrease sprint/i);
+    const editTodoTitle = screen.getByLabelText(
+      /title for new todo/i,
+    ) as HTMLInputElement;
+    const editTodoSprint = screen.getByLabelText(
+      /amount of sprint for new todo/i,
+    ) as HTMLInputElement;
+    expect(editTodoTitle.value).to.equal(todo1.title);
+    expect(editTodoSprint.value).to.equal(String(todo1.sprintTotal));
   });
 });
