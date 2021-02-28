@@ -52,6 +52,7 @@ describe('TimerPage Test', () => {
   it('New todo form will disappear after user save a new todo', () => {
     render(<TimerPage />);
     userEvent.click(screen.getByText(/new todo/i));
+    expect(screen.queryByText(/new todo/i)).to.not.exist;
     const titleInput = screen.getByLabelText(/title for new todo/i);
     const sprintUpButton = screen.getByLabelText(/increase sprint/i);
     const saveButton = screen.getByRole('button', { name: /save/i });

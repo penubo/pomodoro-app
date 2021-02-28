@@ -105,8 +105,7 @@ function TimerPage() {
         onDoneTodo={handleDoneTodo}
         onEditTodo={handleEditTodo}
       />
-      <button onClick={openNewTodoForm}>new todo</button>
-      {creatingNewTodo && (
+      {creatingNewTodo ? (
         <TodoFormProvider onSubmit={submitNewTodo}>
           <TitleField />
           <EstimationSprintInput />
@@ -114,6 +113,8 @@ function TimerPage() {
           <DecreaseSprintButton />
           <SaveFormButton />
         </TodoFormProvider>
+      ) : (
+        <button onClick={openNewTodoForm}>new todo</button>
       )}
     </div>
   );
