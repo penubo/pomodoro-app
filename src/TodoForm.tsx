@@ -30,10 +30,12 @@ function TodoFormProvider({
   children,
   initialForm = { title: '', sprint: 0 },
   onSubmit,
+  onCancel,
 }: {
   children: React.ReactNode;
   initialForm?: TodoFormState;
   onSubmit: (form: TodoFormState) => boolean;
+  onCancel?: () => void;
 }) {
   const [form, dispatch] = useReducer(formReducer, initialForm);
   const handleSubmit = (e: React.SyntheticEvent) => {
@@ -41,8 +43,13 @@ function TodoFormProvider({
     onSubmit(form);
     dispatch({ type: 'reset' });
   };
+  const cancelForm = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    if (onCancel) onCancel();
+    dispatch({ type: 'reset' });
+  };
   return (
-    <TodoFormContext.Provider value={{ form, dispatch }}>
+    <TodoFormContext.Provider value={{ form, dispatch, cancelForm }}>
       <form onSubmit={handleSubmit}>{children}</form>
     </TodoFormContext.Provider>
   );
@@ -58,6 +65,15 @@ function useTodoForm() {
 
 function SaveFormButton() {
   return <button type="submit">save</button>;
+}
+
+function CancelFormButton() {
+  const { cancelForm } = useTodoForm();
+  return (
+    <button type="button" onClick={cancelForm}>
+      cancel
+    </button>
+  );
 }
 
 function TitleField() {
@@ -150,4 +166,5 @@ export {
   EstimationSprintInput,
   IncreaseSprintButton,
   DecreaseSprintButton,
+  CancelFormButton,
 };

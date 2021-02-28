@@ -47,18 +47,29 @@ describe('TimerPage Test', () => {
     screen.getByLabelText(/amount of sprint for new todo/i);
     screen.getByLabelText(/increase sprint/i);
     screen.getByLabelText(/decrease sprint/i);
+    expect(screen.queryByText(/new todo/i)).to.not.exist;
   });
 
-  it('New todo form will disappear after user save a new todo', () => {
+  it('hides New todo form after user save a new todo', () => {
     render(<TimerPage />);
     userEvent.click(screen.getByText(/new todo/i));
-    expect(screen.queryByText(/new todo/i)).to.not.exist;
     const titleInput = screen.getByLabelText(/title for new todo/i);
     const sprintUpButton = screen.getByLabelText(/increase sprint/i);
     const saveButton = screen.getByRole('button', { name: /save/i });
     userEvent.type(titleInput, 'New Todo');
     userEvent.click(sprintUpButton);
     userEvent.click(saveButton);
+    expect(screen.queryByRole('button', { name: /save/i })).to.not.exist;
+    expect(screen.queryByLabelText(/title for new todo/i)).to.not.exist;
+    expect(screen.queryByLabelText(/increase sprint/i)).to.not.exist;
+    expect(screen.queryByLabelText(/decrease sprint/i)).to.not.exist;
+  });
+
+  it('should render new todo button when user cancle to create new todo', () => {
+    render(<TimerPage />);
+    userEvent.click(screen.getByText(/new todo/i));
+    userEvent.click(screen.getByRole('button', { name: /cancel/i }));
+    screen.getByText(/new todo/i);
     expect(screen.queryByRole('button', { name: /save/i })).to.not.exist;
     expect(screen.queryByLabelText(/title for new todo/i)).to.not.exist;
     expect(screen.queryByLabelText(/increase sprint/i)).to.not.exist;

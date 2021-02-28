@@ -1,4 +1,4 @@
-import type { Dispatch } from 'react';
+import type { Dispatch, SyntheticEvent } from 'react';
 
 type TodoFormState = {
   title: string;
@@ -15,6 +15,7 @@ type TodoFormAction =
 type TodoFormContextValue = {
   form: TodoFormState;
   dispatch: Dispatch<TodoFormAction>;
+  cancelForm: (e: SyntheticEvent) => void;
 };
 
 export { TodoFormState, TodoFormAction, TodoFormContextValue };

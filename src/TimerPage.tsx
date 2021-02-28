@@ -7,6 +7,7 @@ import Timer, {
 } from './Timer';
 import Todo from './Todo';
 import TodoFormProvider, {
+  CancelFormButton,
   DecreaseSprintButton,
   EstimationSprintInput,
   IncreaseSprintButton,
@@ -88,6 +89,11 @@ function TimerPage() {
   const openNewTodoForm = () => {
     setCreatingNewTodo(true);
   };
+
+  const cancelCreateNewTodo = () => {
+    setCreatingNewTodo(false);
+  };
+
   return (
     <div>
       <TimerProvider>
@@ -106,12 +112,16 @@ function TimerPage() {
         onEditTodo={handleEditTodo}
       />
       {creatingNewTodo ? (
-        <TodoFormProvider onSubmit={submitNewTodo}>
+        <TodoFormProvider
+          onSubmit={submitNewTodo}
+          onCancel={cancelCreateNewTodo}
+        >
           <TitleField />
           <EstimationSprintInput />
           <IncreaseSprintButton />
           <DecreaseSprintButton />
           <SaveFormButton />
+          <CancelFormButton />
         </TodoFormProvider>
       ) : (
         <button onClick={openNewTodoForm}>new todo</button>
