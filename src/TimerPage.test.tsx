@@ -36,16 +36,14 @@ describe('TimerPage Test', () => {
 
   it('should render new button for creating todo list', () => {
     render(<TimerPage />);
+    screen.getByRole('button', { name: /new todo/i });
+  });
+
+  it('should render todo form when user clicks new button', () => {
+    render(<TimerPage />);
+    userEvent.click(screen.getByText(/new todo/i));
     screen.getByRole('button', { name: /save/i });
-  });
-
-  it('should render input for naming title for new todo list', () => {
-    render(<TimerPage />);
     screen.getByLabelText(/title for new todo/i);
-  });
-
-  it('should render controller for setting sprint of new todo', () => {
-    render(<TimerPage />);
     screen.getByLabelText(/amount of sprint for new todo/i);
     screen.getByLabelText(/increase sprint/i);
     screen.getByLabelText(/decrease sprint/i);
@@ -53,12 +51,12 @@ describe('TimerPage Test', () => {
 
   it('should control sprint selection by up and down button', () => {
     render(<TimerPage />);
+    userEvent.click(screen.getByText(/new todo/i));
     const sprintUpButton = screen.getByLabelText(/increase sprint/i);
     const sprintDownButton = screen.getByLabelText(/decrease sprint/i);
     const sprintSelection = screen.getByLabelText(
       /amount of sprint for new todo/i,
     ) as HTMLInputElement;
-    console.dir(sprintSelection);
     userEvent.click(sprintUpButton);
     expect(sprintSelection.value).to.equal('1');
     userEvent.click(sprintDownButton);
@@ -67,6 +65,7 @@ describe('TimerPage Test', () => {
 
   it('should add new todo item when fill the title, sprint and clicks new button', () => {
     render(<TimerPage />);
+    userEvent.click(screen.getByText(/new todo/i));
     const newTitle = 'newTitle';
     const saveFormButton = screen.getByRole('button', { name: /save/i });
     const titleInput = screen.getByLabelText(/title for new todo/i);
@@ -108,6 +107,7 @@ describe('TimerPage Test', () => {
 
   it('should reset all todo-forms after submit a new Todo', () => {
     render(<TimerPage />);
+    userEvent.click(screen.getByText(/new todo/i));
     const newTitle = 'newTitle';
     const saveFormButton = screen.getByRole('button', { name: /save/i });
     const titleInput = screen.getByLabelText(
@@ -126,6 +126,7 @@ describe('TimerPage Test', () => {
 
   it('should increase done count when one sprint is done', async () => {
     render(<TimerPage />);
+    userEvent.click(screen.getByText(/new todo/i));
     const newTitle = 'newTitle';
     const saveFormButton = screen.getByRole('button', { name: /save/i });
     const titleInput = screen.getByLabelText(/title for new todo/i);
@@ -143,6 +144,7 @@ describe('TimerPage Test', () => {
 
   it('should remove todos when clicks delete button', () => {
     render(<TimerPage />);
+    userEvent.click(screen.getByText(/new todo/i));
     const newTitle = 'newTitle';
     const saveFormButton = screen.getByRole('button', { name: /save/i });
     const titleInput = screen.getByLabelText(/title for new todo/i);
@@ -157,6 +159,7 @@ describe('TimerPage Test', () => {
 
   it('should render done when user clicks done button and it toggles', () => {
     render(<TimerPage />);
+    userEvent.click(screen.getByText(/new todo/i));
     const newTitle = 'newTitle';
     const saveFormButton = screen.getByRole('button', { name: /save/i });
     const titleInput = screen.getByLabelText(/title for new todo/i);
@@ -173,6 +176,7 @@ describe('TimerPage Test', () => {
 
   it('can edit todo item on the list by edit button interface', () => {
     render(<TimerPage />);
+    userEvent.click(screen.getByText(/new todo/i));
     const newTitle = 'newTitle';
     const saveFormButton = screen.getByRole('button', { name: /save/i });
     const titleInput = screen.getByLabelText(/title for new todo/i);

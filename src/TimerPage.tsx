@@ -25,6 +25,7 @@ function TimerPage() {
   const [breaking, setBreaking] = useState<boolean>(false);
   const [round, setRound] = useState<number>(1);
   const [currentTodo, setCurrentTodo] = useState<number | null>(null);
+  const [creatingNewTodo, setCreatingNewTodo] = useState<boolean>(false);
 
   const handleTimerEnd = () => {
     if (breaking) {
@@ -83,6 +84,9 @@ function TimerPage() {
     setTodos([...todos]);
   };
 
+  const openNewTodoForm = () => {
+    setCreatingNewTodo(true);
+  };
   return (
     <div>
       <TimerProvider>
@@ -100,13 +104,16 @@ function TimerPage() {
         onDoneTodo={handleDoneTodo}
         onEditTodo={handleEditTodo}
       />
-      <TodoFormProvider onSubmit={submitNewTodo}>
-        <TitleField />
-        <EstimationSprintInput />
-        <IncreaseSprintButton />
-        <DecreaseSprintButton />
-        <SaveFormButton />
-      </TodoFormProvider>
+      <button onClick={openNewTodoForm}>new todo</button>
+      {creatingNewTodo && (
+        <TodoFormProvider onSubmit={submitNewTodo}>
+          <TitleField />
+          <EstimationSprintInput />
+          <IncreaseSprintButton />
+          <DecreaseSprintButton />
+          <SaveFormButton />
+        </TodoFormProvider>
+      )}
     </div>
   );
 }
