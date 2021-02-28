@@ -86,4 +86,18 @@ describe('Todo Test', () => {
     expect(screen.queryByLabelText(/amount of sprint for new todo/i)).to.not
       .exist;
   });
+
+  it('should disappear when user clicks new button on edit todo form', () => {
+    const todo1 = todoBuilder();
+    render(<Todo todos={[todo1]} />);
+    const editTodoButton = screen.getByText(/edit/i);
+    userEvent.click(editTodoButton);
+    const newButton = screen.getByRole('button', { name: /new/i });
+    userEvent.click(newButton);
+    expect(screen.queryByLabelText(/increase sprint/i)).to.not.exist;
+    expect(screen.queryByLabelText(/decrease sprint/i)).to.not.exist;
+    expect(screen.queryByLabelText(/title for new todo/i)).to.not.exist;
+    expect(screen.queryByLabelText(/amount of sprint for new todo/i)).to.not
+      .exist;
+  });
 });

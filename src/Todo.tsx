@@ -54,6 +54,7 @@ function Todo({
   };
 
   const handleSubmitEditForm = (todoId: number) => (form: TodoFormState) => {
+    setEditingTodo(null);
     if (onEditTodo) {
       onEditTodo(todoId, form);
       return true;
