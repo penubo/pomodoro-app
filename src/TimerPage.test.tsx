@@ -39,7 +39,7 @@ describe('TimerPage Test', () => {
     screen.getByRole('button', { name: /new todo/i });
   });
 
-  it('should render todo form when user clicks new button', () => {
+  it('should render todo form when user clicks new todo button', () => {
     render(<TimerPage />);
     userEvent.click(screen.getByText(/new todo/i));
     screen.getByRole('button', { name: /save/i });
@@ -47,6 +47,21 @@ describe('TimerPage Test', () => {
     screen.getByLabelText(/amount of sprint for new todo/i);
     screen.getByLabelText(/increase sprint/i);
     screen.getByLabelText(/decrease sprint/i);
+  });
+
+  it('New todo form will disappear after user save a new todo', () => {
+    render(<TimerPage />);
+    userEvent.click(screen.getByText(/new todo/i));
+    const titleInput = screen.getByLabelText(/title for new todo/i);
+    const sprintUpButton = screen.getByLabelText(/increase sprint/i);
+    const saveButton = screen.getByRole('button', { name: /save/i });
+    userEvent.type(titleInput, 'New Todo');
+    userEvent.click(sprintUpButton);
+    userEvent.click(saveButton);
+    expect(screen.queryByRole('button', { name: /save/i })).to.not.exist;
+    expect(screen.queryByLabelText(/title for new todo/i)).to.not.exist;
+    expect(screen.queryByLabelText(/increase sprint/i)).to.not.exist;
+    expect(screen.queryByLabelText(/decrease sprint/i)).to.not.exist;
   });
 
   it('should control sprint selection by up and down button', () => {
@@ -103,25 +118,6 @@ describe('TimerPage Test', () => {
     passWorkTime(); // 4 session
     const longBreakingTimer = screen.getByLabelText(/timer/i);
     expect(longBreakingTimer.innerText).to.equal('15:00');
-  });
-
-  it('should reset all todo-forms after submit a new Todo', () => {
-    render(<TimerPage />);
-    userEvent.click(screen.getByText(/new todo/i));
-    const newTitle = 'newTitle';
-    const saveFormButton = screen.getByRole('button', { name: /save/i });
-    const titleInput = screen.getByLabelText(
-      /title for new todo/i,
-    ) as HTMLInputElement;
-    const sprintInput = screen.getByLabelText(
-      /amount of sprint for new todo/i,
-    ) as HTMLInputElement;
-    const sprintUpButton = screen.getByLabelText(/increase sprint/i);
-    userEvent.type(titleInput, newTitle);
-    userEvent.click(sprintUpButton);
-    userEvent.click(saveFormButton);
-    expect(titleInput.value).to.equal('');
-    expect(sprintInput.value).to.equal('0');
   });
 
   it('should increase done count when one sprint is done', async () => {

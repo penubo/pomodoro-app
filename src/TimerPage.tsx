@@ -59,6 +59,7 @@ function TimerPage() {
         done: false,
       },
     ]);
+    setCreatingNewTodo(false);
     return true;
   };
 
