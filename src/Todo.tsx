@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Todo.scss';
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { TodoList } from 'types/todo';
 import TodoFormProvider, {
@@ -98,7 +98,9 @@ function Todo({
                 <button aria-label="delete" onClick={handleDelete(todoItem.id)}>
                   <FontAwesomeIcon icon={faTrashAlt} />
                 </button>
-                <button onClick={handleEditTodo(todoItem.id)}>edit</button>
+                <button aria-label="edit" onClick={handleEditTodo(todoItem.id)}>
+                  <FontAwesomeIcon icon={faEdit} />
+                </button>
               </div>
             </li>
             {todoItem.id === editingTodo && (

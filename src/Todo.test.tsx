@@ -65,7 +65,7 @@ describe('Todo Test', () => {
   it('should render form when clicks edit button for a todo item', async () => {
     const todo1 = todoBuilder();
     render(<Todo todos={[todo1]} />);
-    const editTodoButton = screen.getByText(/edit/i);
+    const editTodoButton = screen.getByLabelText(/edit/i);
     userEvent.click(editTodoButton);
     screen.getByRole('button', { name: /save/i });
     screen.getByLabelText(/increase sprint/i);
@@ -90,7 +90,7 @@ describe('Todo Test', () => {
   it('should disappear when user clicks new button on edit todo form', () => {
     const todo1 = todoBuilder();
     render(<Todo todos={[todo1]} />);
-    const editTodoButton = screen.getByText(/edit/i);
+    const editTodoButton = screen.getByLabelText(/edit/i);
     userEvent.click(editTodoButton);
     const saveButton = screen.getByRole('button', { name: /save/i });
     userEvent.click(saveButton);

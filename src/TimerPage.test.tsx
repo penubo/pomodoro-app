@@ -180,7 +180,7 @@ describe('TimerPage Test', () => {
     userEvent.type(titleInput, newTitle);
     userEvent.click(sprintUpButton);
     userEvent.click(saveFormButton);
-    const editTodoButton = screen.getByText(/edit/i);
+    const editTodoButton = screen.getByLabelText(/edit/i);
     userEvent.click(editTodoButton);
     const editTodoTitleInput = screen.getAllByLabelText(
       /title for new todo/i,
