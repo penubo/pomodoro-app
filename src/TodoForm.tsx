@@ -56,8 +56,8 @@ function useTodoForm() {
   return context;
 }
 
-function NewFormButton() {
-  return <button type="submit">new</button>;
+function SaveFormButton() {
+  return <button type="submit">save</button>;
 }
 
 function TitleField() {
@@ -145,7 +145,7 @@ function DecreaseSprintButton() {
 export default TodoFormProvider;
 export {
   useTodoForm,
-  NewFormButton,
+  SaveFormButton,
   TitleField,
   EstimationSprintInput,
   IncreaseSprintButton,

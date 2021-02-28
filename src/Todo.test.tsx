@@ -67,7 +67,7 @@ describe('Todo Test', () => {
     render(<Todo todos={[todo1]} />);
     const editTodoButton = screen.getByText(/edit/i);
     userEvent.click(editTodoButton);
-    screen.getByRole('button', { name: /new/i });
+    screen.getByRole('button', { name: /save/i });
     screen.getByLabelText(/increase sprint/i);
     screen.getByLabelText(/decrease sprint/i);
     const editTodoTitle = screen.getByLabelText(
@@ -79,7 +79,7 @@ describe('Todo Test', () => {
     expect(editTodoTitle.value).to.equal(todo1.title);
     expect(editTodoSprint.value).to.equal(String(todo1.sprintTotal));
     userEvent.click(editTodoButton);
-    expect(screen.queryByRole('button', { name: /new/i })).to.not.exist;
+    expect(screen.queryByRole('button', { name: /save/i })).to.not.exist;
     expect(screen.queryByLabelText(/increase sprint/i)).to.not.exist;
     expect(screen.queryByLabelText(/decrease sprint/i)).to.not.exist;
     expect(screen.queryByLabelText(/title for new todo/i)).to.not.exist;
@@ -92,8 +92,8 @@ describe('Todo Test', () => {
     render(<Todo todos={[todo1]} />);
     const editTodoButton = screen.getByText(/edit/i);
     userEvent.click(editTodoButton);
-    const newButton = screen.getByRole('button', { name: /new/i });
-    userEvent.click(newButton);
+    const saveButton = screen.getByRole('button', { name: /save/i });
+    userEvent.click(saveButton);
     expect(screen.queryByLabelText(/increase sprint/i)).to.not.exist;
     expect(screen.queryByLabelText(/decrease sprint/i)).to.not.exist;
     expect(screen.queryByLabelText(/title for new todo/i)).to.not.exist;

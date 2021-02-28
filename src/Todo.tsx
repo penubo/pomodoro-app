@@ -7,7 +7,7 @@ import TodoFormProvider, {
   DecreaseSprintButton,
   EstimationSprintInput,
   IncreaseSprintButton,
-  NewFormButton,
+  SaveFormButton,
   TitleField,
 } from './TodoForm';
 import type { TodoFormState } from 'types/todoform';
@@ -113,7 +113,7 @@ function Todo({
                 <EstimationSprintInput />
                 <IncreaseSprintButton />
                 <DecreaseSprintButton />
-                <NewFormButton />
+                <SaveFormButton />
               </TodoFormProvider>
             )}
           </React.Fragment>

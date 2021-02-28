@@ -10,7 +10,7 @@ import TodoFormProvider, {
   DecreaseSprintButton,
   EstimationSprintInput,
   IncreaseSprintButton,
-  NewFormButton,
+  SaveFormButton,
   TitleField,
 } from './TodoForm';
 import type { TodoFormState } from 'types/todoform';
@@ -105,7 +105,7 @@ function TimerPage() {
         <EstimationSprintInput />
         <IncreaseSprintButton />
         <DecreaseSprintButton />
-        <NewFormButton />
+        <SaveFormButton />
       </TodoFormProvider>
     </div>
   );
