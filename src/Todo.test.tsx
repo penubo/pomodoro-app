@@ -65,7 +65,8 @@ describe('Todo Test', () => {
   it('should render form when clicks edit button for a todo item', async () => {
     const todo1 = todoBuilder();
     render(<Todo todos={[todo1]} />);
-    userEvent.click(screen.getByText(/edit/i));
+    const editTodoButton = screen.getByText(/edit/i);
+    userEvent.click(editTodoButton);
     screen.getByRole('button', { name: /new/i });
     screen.getByLabelText(/increase sprint/i);
     screen.getByLabelText(/decrease sprint/i);
@@ -77,5 +78,12 @@ describe('Todo Test', () => {
     ) as HTMLInputElement;
     expect(editTodoTitle.value).to.equal(todo1.title);
     expect(editTodoSprint.value).to.equal(String(todo1.sprintTotal));
+    userEvent.click(editTodoButton);
+    expect(screen.queryByRole('button', { name: /new/i })).to.not.exist;
+    expect(screen.queryByLabelText(/increase sprint/i)).to.not.exist;
+    expect(screen.queryByLabelText(/decrease sprint/i)).to.not.exist;
+    expect(screen.queryByLabelText(/title for new todo/i)).to.not.exist;
+    expect(screen.queryByLabelText(/amount of sprint for new todo/i)).to.not
+      .exist;
   });
 });

@@ -170,4 +170,34 @@ describe('TimerPage Test', () => {
     userEvent.click(todoNotDoneIconButton);
     expect(screen.queryByLabelText(/todo done/i)).to.not.exist;
   });
+
+  it('can edit todo item on the list by edit button interface', async () => {
+    render(<TimerPage />);
+    const newTitle = 'newTitle';
+    const newButton = screen.getByRole('button', { name: /new/i });
+    const titleInput = screen.getByLabelText(/title for new todo/i);
+    const sprintUpButton = screen.getByLabelText(/increase sprint/i);
+    userEvent.type(titleInput, newTitle);
+    userEvent.click(sprintUpButton);
+    userEvent.click(newButton);
+    const editTodoButton = screen.getByText(/edit/i);
+    userEvent.click(editTodoButton);
+    const editTodoTitleInput = screen.getAllByLabelText(
+      /title for new todo/i,
+    )[0];
+    const editTodoSprintUpButton = screen.getAllByLabelText(
+      /increase sprint/i,
+    )[0];
+    const editedTitle = ' edited';
+    const saveEditTodoButton = screen.getAllByRole('button', {
+      name: /new/i,
+    })[0];
+    userEvent.type(editTodoTitleInput, editedTitle);
+    userEvent.click(editTodoSprintUpButton);
+    userEvent.click(saveEditTodoButton);
+    await waitFor(
+      () => expect(screen.getByText(newTitle + editedTitle)).to.exist,
+    );
+    expect(screen.getByText(/0 \/ 2/i)).to.exist;
+  });
 });

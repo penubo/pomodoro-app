@@ -10,12 +10,14 @@ import TodoFormProvider, {
   NewFormButton,
   TitleField,
 } from './TodoForm';
+import type { TodoFormState } from 'types/todoform';
 
 interface TodoProps {
   todos: TodoList;
   onChangeCurrentTodo?: (newTodo: number) => void;
   onDeleteTodo?: (todoId: number) => void;
   onDoneTodo?: (todoId: number) => void;
+  onEditTodo?: (todoId: number, form: TodoFormState) => void;
   currentTodo?: number | null;
 }
 
@@ -24,6 +26,7 @@ function Todo({
   onChangeCurrentTodo,
   onDeleteTodo,
   onDoneTodo,
+  onEditTodo,
   currentTodo = 0,
 }: TodoProps) {
   const [editingTodo, setEditingTodo] = useState<number | null>(null);
@@ -46,7 +49,16 @@ function Todo({
     e: React.MouseEvent<HTMLButtonElement>,
   ) => {
     e.stopPropagation();
-    setEditingTodo(todoId);
+    if (editingTodo === todoId) setEditingTodo(null);
+    else setEditingTodo(todoId);
+  };
+
+  const handleSubmitEditForm = (todoId: number) => (form: TodoFormState) => {
+    if (onEditTodo) {
+      onEditTodo(todoId, form);
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -94,7 +106,7 @@ function Todo({
                   title: todoItem.title,
                   sprint: todoItem.sprintTotal,
                 }}
-                onSubmit={() => true}
+                onSubmit={handleSubmitEditForm(todoItem.id)}
               >
                 <TitleField />
                 <EstimationSprintInput />
