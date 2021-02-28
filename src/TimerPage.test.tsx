@@ -171,7 +171,7 @@ describe('TimerPage Test', () => {
     expect(screen.queryByLabelText(/todo done/i)).to.not.exist;
   });
 
-  it('can edit todo item on the list by edit button interface', async () => {
+  it('can edit todo item on the list by edit button interface', () => {
     render(<TimerPage />);
     const newTitle = 'newTitle';
     const saveFormButton = screen.getByRole('button', { name: /save/i });
@@ -195,9 +195,7 @@ describe('TimerPage Test', () => {
     userEvent.type(editTodoTitleInput, editedTitle);
     userEvent.click(editTodoSprintUpButton);
     userEvent.click(saveEditTodoButton);
-    await waitFor(
-      () => expect(screen.getByText(newTitle + editedTitle)).to.exist,
-    );
+    expect(screen.getByText(newTitle + editedTitle)).to.exist;
     expect(screen.getByText(/0 \/ 2/i)).to.exist;
   });
 });
