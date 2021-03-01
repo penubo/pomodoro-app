@@ -136,7 +136,9 @@ function TimerPage() {
           </div>
         </TodoFormProvider>
       ) : (
-        <button onClick={openNewTodoForm}>new todo</button>
+        <button className="new-todo-btn" onClick={openNewTodoForm}>
+          new todo
+        </button>
       )}
     </div>
   );

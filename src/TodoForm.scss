@@ -61,3 +61,15 @@
   font-size: 1rem;
   padding: .5rem;
 }
+
+.new-todo-btn {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  border: 2px dashed;
+  background-color: white;
+  opacity: .5;
+  border-radius: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+}
