@@ -16,6 +16,7 @@ import TodoFormProvider, {
 } from './TodoForm';
 import type { TodoFormState } from 'types/todoform';
 import type { TodoItem } from 'types/todo';
+import './TodoForm.scss';
 
 const SHORT_BREAK = 300;
 const LONG_BREAK = 900;
@@ -116,12 +117,23 @@ function TimerPage() {
           onSubmit={submitNewTodo}
           onCancel={cancelCreateNewTodo}
         >
-          <TitleField />
-          <EstimationSprintInput />
-          <IncreaseSprintButton />
-          <DecreaseSprintButton />
-          <SaveFormButton />
-          <CancelFormButton />
+          <div className="form-container">
+            <div className="form-container-inner">
+              <TitleField />
+              <div className="form-est-container">
+                <span>How many sprint do you need?</span>
+                <div className="form-est-container-inner">
+                  <EstimationSprintInput />
+                  <IncreaseSprintButton />
+                  <DecreaseSprintButton />
+                </div>
+              </div>
+            </div>
+            <div className="form-submit-container">
+              <CancelFormButton />
+              <SaveFormButton />
+            </div>
+          </div>
         </TodoFormProvider>
       ) : (
         <button onClick={openNewTodoForm}>new todo</button>

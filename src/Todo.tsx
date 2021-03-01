@@ -4,6 +4,7 @@ import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { TodoList } from 'types/todo';
 import TodoFormProvider, {
+  CancelFormButton,
   DecreaseSprintButton,
   EstimationSprintInput,
   IncreaseSprintButton,
@@ -51,6 +52,10 @@ function Todo({
     e.stopPropagation();
     if (editingTodo === todoId) setEditingTodo(null);
     else setEditingTodo(todoId);
+  };
+
+  const cancelEditTodo = () => {
+    setEditingTodo(null);
   };
 
   const handleSubmitEditForm = (todoId: number) => (form: TodoFormState) => {
@@ -109,13 +114,26 @@ function Todo({
                   title: todoItem.title,
                   sprint: todoItem.sprintTotal,
                 }}
+                onCancel={cancelEditTodo}
                 onSubmit={handleSubmitEditForm(todoItem.id)}
               >
-                <TitleField />
-                <EstimationSprintInput />
-                <IncreaseSprintButton />
-                <DecreaseSprintButton />
-                <SaveFormButton />
+                <div className="form-container">
+                  <div className="form-container-inner">
+                    <TitleField />
+                    <div className="form-est-container">
+                      <span>How many sprint do you need?</span>
+                      <div className="form-est-container-inner">
+                        <EstimationSprintInput />
+                        <IncreaseSprintButton />
+                        <DecreaseSprintButton />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-submit-container">
+                    <CancelFormButton />
+                    <SaveFormButton />
+                  </div>
+                </div>
               </TodoFormProvider>
             )}
           </React.Fragment>

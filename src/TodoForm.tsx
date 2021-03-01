@@ -6,6 +6,7 @@ import type {
   TodoFormContextValue,
   TodoFormState,
 } from 'types/todoform';
+import './TodoForm.scss';
 
 const TodoFormContext = createContext<TodoFormContextValue | null>(null);
 
@@ -64,13 +65,17 @@ function useTodoForm() {
 }
 
 function SaveFormButton() {
-  return <button type="submit">save</button>;
+  return (
+    <button className="form-submit-btn" type="submit">
+      save
+    </button>
+  );
 }
 
 function CancelFormButton() {
   const { cancelForm } = useTodoForm();
   return (
-    <button type="button" onClick={cancelForm}>
+    <button className="form-submit-btn" type="button" onClick={cancelForm}>
       cancel
     </button>
   );
@@ -88,6 +93,7 @@ function TitleField() {
   };
   return (
     <input
+      className="form-title"
       id="todo-title"
       aria-label="title for new todo"
       placeholder="what will you do?"
@@ -110,6 +116,7 @@ function EstimationSprintInput() {
   return (
     <input
       id="todo-sprint"
+      className="form-sprint"
       aria-label="amount of sprint for new todo"
       name="sprint"
       type="number"
