@@ -3,7 +3,7 @@
     "start": "snowpack dev",
     "build": "snowpack build",
     "test": "web-test-runner",
-    "test:all": "web-test-runner \"src/**/*.test.tsx\"",
+    "test:all": "web-test-runner \"src/dist/**/*.test.{js,jsx,ts,tsx}\"",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\""
   },
