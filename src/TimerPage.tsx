@@ -21,6 +21,7 @@ import './TodoForm.scss';
 const SHORT_BREAK = 300;
 const LONG_BREAK = 900;
 const WORK_TIME = 1500;
+
 function TimerPage() {
   const [todos, setTodos] = useState<Array<TodoItem>>([]);
   const [timer, setTimer] = useState<number>(WORK_TIME);
