@@ -12,8 +12,8 @@ const todoBuilder = build<TodoItem>('Todo', {
     id: sequence(),
     title: fake((f) => f.name.title()),
     sprintTotal: fake((f) => f.random.number()),
-    sprintEnded: 0,
-    done: fake((f) => f.random.boolean),
+    sprintDone: 0,
+    todoDone: fake((f) => f.random.boolean),
   },
 });
 describe('Todo Test', () => {
@@ -38,10 +38,10 @@ describe('Todo Test', () => {
     const todo2 = todoBuilder();
     const todos = [todo1, todo2];
     render(<Todo todos={todos} />);
-    expect(screen.getByText(`${todo1.sprintEnded} / ${todo1.sprintTotal}`)).to
-      .be.exist;
-    expect(screen.getByText(`${todo2.sprintEnded} / ${todo2.sprintTotal}`)).to
-      .be.exist;
+    expect(screen.getByText(`${todo1.sprintDone} / ${todo1.sprintTotal}`)).to.be
+      .exist;
+    expect(screen.getByText(`${todo2.sprintDone} / ${todo2.sprintTotal}`)).to.be
+      .exist;
   });
 
   it('should render selected icon when clicks todoItem', () => {

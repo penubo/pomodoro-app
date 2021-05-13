@@ -17,13 +17,23 @@ import TodoFormProvider, {
 import type { TodoFormState } from 'types/todoform';
 import type { TodoItem } from 'types/todo';
 import './TodoForm.scss';
+import useSWR from 'swr';
 
 const SHORT_BREAK = 300;
 const LONG_BREAK = 900;
 const WORK_TIME = 1500;
 
+// @ts-ignore
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
+
 function TimerPage() {
-  const [todos, setTodos] = useState<Array<TodoItem>>([]);
+  // replace get all todos
+  //const [todos, setTodos] = useState<Array<TodoItem>>([]);
+  const { data, error } = useSWR<Array<TodoItem>>(
+    'http://localhost:3000/todos',
+    fetcher,
+  );
+  const todos = data || [];
   const [timer, setTimer] = useState<number>(WORK_TIME);
   const [breaking, setBreaking] = useState<boolean>(false);
   const [round, setRound] = useState<number>(1);
@@ -44,14 +54,40 @@ function TimerPage() {
       setRound((r) => r + 1);
 
       if (currentTodo !== null) {
+        fetch(`http://localhost:3000/todos/${currentTodo}`, {
+          method: 'PATCH',
+          body: JSON.stringify({
+            sprintDone: todos[currentTodo].sprintDone + 1,
+          }),
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+        });
+        /*
         todos[currentTodo].sprintEnded += 1;
+        // replace patch todo
         setTodos([...todos]);
+        */
       }
     }
   };
 
   const submitNewTodo = (form: TodoFormState) => {
     if (form.title === '' || form.sprint <= 0) return false;
+    // replace with post todo
+    fetch(`http://localhost:3000/todos`, {
+      method: 'POST',
+      body: JSON.stringify({
+        title: form.title,
+        sprintTotal: form.sprint,
+        sprintDone: 0,
+        todoDone: false,
+      }),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    });
+    /*
     setTodos([
       ...todos,
       {
@@ -62,6 +98,7 @@ function TimerPage() {
         done: false,
       },
     ]);
+    */
     setCreatingNewTodo(false);
     return true;
   };
@@ -71,21 +108,49 @@ function TimerPage() {
   };
 
   const handleDeleteTodo = (todoId: number) => {
+    // replace with delete todo
+    fetch(`http://localhost:3000/todos/${todoId}`, {
+      method: 'DELETE',
+    });
+    /*
     setTodos((todos) => todos.filter((todo) => todo.id !== todoId));
+    */
   };
 
   const handleDoneTodo = (todoId: number) => {
+    // replace patch todo
+    fetch(`http://localhost:3000/todos/${todoId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        todoDone: !todos[todoId].todoDone,
+      }),
+    });
+    /*
     todos[todoId].done = !todos[todoId].done;
     setTodos([...todos]);
+    */
   };
 
   const handleEditTodo = (todoId: number, form: TodoFormState) => {
+    // replace patch todo
+    fetch(`http://localhost:3000/todos/${todoId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        title: form.title,
+        sprintTotal: form.sprint,
+      }),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    });
+    /*
     todos[todoId] = {
       ...todos[todoId],
       title: form.title,
       sprintTotal: form.sprint,
     };
     setTodos([...todos]);
+    */
   };
 
   const openNewTodoForm = () => {

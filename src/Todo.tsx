@@ -84,7 +84,7 @@ function Todo({
                     onClick={handleDone(todoItem.id)}
                     className="todo-done-box"
                   >
-                    {todoItem.done ? (
+                    {todoItem.todoDone ? (
                       <span aria-label="todo done">🥳</span>
                     ) : (
                       <span aria-label="todo not done">👨‍💻</span>
@@ -99,7 +99,7 @@ function Todo({
                   </div>
                   <span>{todoItem.title}</span>
                 </div>
-                <span className="todo-item-sprint">{`${todoItem.sprintEnded} / ${todoItem.sprintTotal}`}</span>
+                <span className="todo-item-sprint">{`${todoItem.sprintDone} / ${todoItem.sprintTotal}`}</span>
                 <button aria-label="delete" onClick={handleDelete(todoItem.id)}>
                   <FontAwesomeIcon icon={faTrashAlt} />
                 </button>

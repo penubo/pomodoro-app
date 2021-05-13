@@ -2,8 +2,8 @@ type TodoItem = {
   id: number;
   title: string;
   sprintTotal: number;
-  sprintEnded: number;
-  done: boolean;
+  sprintDone: number;
+  todoDone: boolean;
 };
 
 type TodoList = Array<TodoItem>;
