@@ -154,6 +154,7 @@ function TimerPage() {
   };
 
   const openNewTodoForm = () => {
+    console.log('button clicked');
     setCreatingNewTodo(true);
   };
 
