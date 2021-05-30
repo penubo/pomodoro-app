@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 const WORK_TIME = 1500;
 const SHORT_BREAK = 300;
 
-describe('TimerPage Test', () => {
+describe.skip('TimerPage Test', () => {
   function passWorkTime() {
     //passTime(WORK_TIME);
   }
@@ -19,7 +19,7 @@ describe('TimerPage Test', () => {
     screen.getByRole('button', { name: /new todo/i });
   });
 
-  it('should render todo form when user clicks new todo button', () => {
+  it.only('should render todo form when user clicks new todo button', () => {
     render(<TimerPage />);
     userEvent.click(screen.getByText(/new todo/i));
     screen.getByRole('button', { name: /save/i });
@@ -27,7 +27,7 @@ describe('TimerPage Test', () => {
     screen.getByLabelText(/amount of sprint for new todo/i);
     screen.getByLabelText(/increase sprint/i);
     screen.getByLabelText(/decrease sprint/i);
-    expect(screen.queryByText(/new todo/i)).to.not.exist;
+    expect(screen.queryByText(/new todo/i)).toBeFalsy();
   });
 
   it('hides New todo form after user save a new todo', () => {
