@@ -32,6 +32,7 @@ function TimerPage() {
   const { data, error } = useSWR<Array<TodoItem>>(
     'http://localhost:3000/todos',
     fetcher,
+    { refreshInterval: 1000 },
   );
   const todos = data || [];
   const [timer, setTimer] = useState<number>(WORK_TIME);
@@ -109,6 +110,7 @@ function TimerPage() {
 
   const handleDeleteTodo = (todoId: number) => {
     // replace with delete todo
+    console.log('here');
     fetch(`http://localhost:3000/todos/${todoId}`, {
       method: 'DELETE',
     });
@@ -154,6 +156,7 @@ function TimerPage() {
   };
 
   const openNewTodoForm = () => {
+    console.log('button clicked');
     setCreatingNewTodo(true);
   };
 
