@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 const WORK_TIME = 1500;
 const SHORT_BREAK = 300;
 
-describe.skip('TimerPage Test', () => {
+describe('TimerPage Test', () => {
   function passWorkTime() {
     //passTime(WORK_TIME);
   }
@@ -189,7 +189,10 @@ describe.skip('TimerPage Test', () => {
     expect(screen.getByText(/0 \/ 2/i)).to.exist;
   });
 
-  it.only('test', () => {
-    expect(true);
+  it.only('test', async () => {
+    const { debug } = render(<TimerPage />);
+    await screen.findByText('First Todo');
+
+    debug();
   });
 });
