@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "serve": "live-server dist/",
     "start": "webpack serve --mode development",
     "build": "webpack --mode production",
     "test": "jest"
@@ -9,6 +10,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.2",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "axios": "^0.21.1",
+    "live-server": "^1.2.1",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "swr": "^0.5.6"
