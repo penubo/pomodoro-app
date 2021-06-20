@@ -22,7 +22,7 @@ import useSWR from 'swr';
 
 const SHORT_BREAK = 300;
 const LONG_BREAK = 900;
-const WORK_TIME = 2;
+const WORK_TIME = 1500;
 
 //@ts-ignore
 const fetcher = (url) => axios.get(url).then(res => res.data);
