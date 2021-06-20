@@ -7,21 +7,21 @@ jest.useFakeTimers();
 
 const WORK_TIME = 1500;
 const SHORT_BREAK = 300;
+const SPRINT_SEC = 1500;
+const BREAK_SEC = 300;
 
 describe('TimerPage Test', () => {
-  function passWorkTime() {
-    //passTime(WORK_TIME);
-    /*
-    for (let i = 0; i < WORK_TIME; i++)
-      act(() => {
-        jest.advanceTimersByTime(1)
-      })
-      */
 
-    //act(() => {jest.advanceTimersByTime(WORK_TIME)})
+  function passTimer(sec: number, offset?: number) {
+    const offsetSec = offset || 0;
+    act(() => {jest.advanceTimersByTime(1001 * (sec + offsetSec))})
+  }
+
+  function passWorkTime() {
+    passTimer(SPRINT_SEC, 0)
   }
   function passShortBreak() {
-    //passTime(SHORT_BREAK);
+    passTimer(BREAK_SEC, 0);
   }
 
   it('should render new button for creating todo list', () => {
@@ -95,19 +95,19 @@ describe('TimerPage Test', () => {
     expect(screen.getByText(newTitle)).to.be.exist;
   });
 
-  it.skip('should render breaking session after pomodoro session complete', () => {
+  it('should render breaking session after pomodoro session complete', () => {
     render(<TimerPage />);
     const startButton = screen.getByRole('button', {
       name: 'start',
     });
     userEvent.click(startButton);
-    passWorkTime()
+    passWorkTime();
     // should query timer after time passed because it is re mounted using key props
     const timer: HTMLSpanElement = screen.getByLabelText('timer');
     expect(timer).toHaveTextContent('05:00');
   });
 
-  it.skip('should render long breaking session after 4 pomodoro session complete', () => {
+  it('should render long breaking session after 4 pomodoro session complete', () => {
     render(<TimerPage />);
     const startButton = screen.getByRole('button', {name: 'start'});
     userEvent.click(startButton);
@@ -118,21 +118,15 @@ describe('TimerPage Test', () => {
     passWorkTime(); // 3 session
     passShortBreak();
     passWorkTime(); // 4 session
-    const longBreakingTimer = screen.getByLabelText(/timer/i);
-    expect(longBreakingTimer.innerText).to.equal('15:00');
+    const timer: HTMLSpanElement = screen.getByLabelText('timer');
+    expect(timer).toHaveTextContent('15:00');
   });
 
   it.skip('should increase done count when one sprint is done', async () => {
     render(<TimerPage />);
-    userEvent.click(screen.getByText(/new todo/i));
-    const newTitle = 'newTitle';
-    const saveFormButton = screen.getByRole('button', {name: /save/i});
-    const titleInput = screen.getByLabelText(/title for new todo/i);
-    const sprintUpButton = screen.getByLabelText(/increase sprint/i);
-    userEvent.type(titleInput, newTitle);
-    userEvent.click(sprintUpButton);
-    userEvent.click(saveFormButton);
-    userEvent.click(screen.getByText(newTitle));
+    const button = await screen.findByText(/first todo/i);
+
+    userEvent.click(button);
     expect(screen.getByText(/0 \/ 1/i));
     const startButton = screen.getByRole('button', {name: 'start'});
     userEvent.click(startButton);
