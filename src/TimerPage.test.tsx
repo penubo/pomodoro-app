@@ -14,7 +14,7 @@ describe('TimerPage Test', () => {
     //passTime(SHORT_BREAK);
   }
 
-  it('should render new button for creating todo list', () => {
+  it.only('should render new button for creating todo list', () => {
     render(<TimerPage />);
     screen.getByRole('button', { name: /new todo/i });
   });
@@ -45,15 +45,15 @@ describe('TimerPage Test', () => {
     expect(screen.queryByLabelText(/decrease sprint/i)).to.not.exist;
   });
 
-  it('should render new todo button when user cancle to create new todo', () => {
+  it.only('should render new todo button when user cancle to create new todo', () => {
     render(<TimerPage />);
     userEvent.click(screen.getByText(/new todo/i));
     userEvent.click(screen.getByRole('button', { name: /cancel/i }));
     screen.getByText(/new todo/i);
-    expect(screen.queryByRole('button', { name: /save/i })).to.not.exist;
-    expect(screen.queryByLabelText(/title for new todo/i)).to.not.exist;
-    expect(screen.queryByLabelText(/increase sprint/i)).to.not.exist;
-    expect(screen.queryByLabelText(/decrease sprint/i)).to.not.exist;
+    expect(screen.queryByRole('button', { name: /save/i })).toBeFalsy();
+    expect(screen.queryByLabelText(/title for new todo/i)).toBeFalsy();
+    expect(screen.queryByLabelText(/increase sprint/i)).toBeFalsy();
+    expect(screen.queryByLabelText(/decrease sprint/i)).toBeFalsy();
   });
 
   it('should control sprint selection by up and down button', () => {
@@ -187,12 +187,5 @@ describe('TimerPage Test', () => {
     userEvent.click(saveEditTodoButton);
     expect(screen.getByText(newTitle + editedTitle)).to.exist;
     expect(screen.getByText(/0 \/ 2/i)).to.exist;
-  });
-
-  it.only('test', async () => {
-    const { debug } = render(<TimerPage />);
-    await screen.findByText('First Todo');
-
-    debug();
   });
 });

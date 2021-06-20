@@ -17,14 +17,15 @@ import TodoFormProvider, {
 import type { TodoFormState } from 'types/todoform';
 import type { TodoItem } from 'types/todo';
 import './TodoForm.scss';
+import axios from 'axios';
 import useSWR from 'swr';
 
 const SHORT_BREAK = 300;
 const LONG_BREAK = 900;
 const WORK_TIME = 1500;
 
-// @ts-ignore
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
+//@ts-ignore
+const fetcher = (url) => axios.get(url).then(res => res.data);
 
 function TimerPage() {
   // replace get all todos
