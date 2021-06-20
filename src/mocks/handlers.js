@@ -31,6 +31,13 @@ export const handlers = [
       ctx.status(200),
       ctx.json([
         {
+          id: 67,
+          title: 'First Todo',
+          sprintTotal: 1,
+          sprintDone: 0,
+          todoDone: false,
+        },
+        {
           id: 69,
           title: 'Second Todo',
           sprintTotal: 3,
@@ -41,13 +48,6 @@ export const handlers = [
           id: 70,
           title: 'Third Todo',
           sprintTotal: 3,
-          sprintDone: 0,
-          todoDone: false,
-        },
-        {
-          id: 67,
-          title: 'First Todo',
-          sprintTotal: 4,
           sprintDone: 0,
           todoDone: false,
         },
