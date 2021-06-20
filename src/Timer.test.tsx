@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, render, screen } from '@testing-library/react';
+import {act, render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Timer, {
   TimerProvider,
@@ -15,14 +15,14 @@ describe('Timer Test', () => {
   };
 
   it('should render time as HH:MM format by given time', () => {
-    render(<Timer initialTime={1500} />, { wrapper: Wrapper });
+    render(<Timer initialTime={1500} />, {wrapper: Wrapper});
     const timer: HTMLSpanElement = screen.getByLabelText('timer');
     // 1500sec == 25min 00sec
     expect(timer).toHaveTextContent('25:00');
   });
 
   it('should not ticking pomodoro time unless user clicks start button', async () => {
-    render(<Timer initialTime={1500} />, { wrapper: Wrapper });
+    render(<Timer initialTime={1500} />, {wrapper: Wrapper});
 
     //clock.tick('00:01');
     jest.advanceTimersByTime(1000);
@@ -41,8 +41,8 @@ describe('Timer Test', () => {
         wrapper: Wrapper,
       },
     );
-    const startButton = screen.getByRole('button', { name: 'start' });
-    const stopButton = screen.getByRole('button', { name: 'stop' });
+    const startButton = screen.getByRole('button', {name: 'start'});
+    const stopButton = screen.getByRole('button', {name: 'stop'});
     userEvent.click(startButton);
     const timer: HTMLSpanElement = screen.getByLabelText('timer');
     act(() => {
@@ -85,7 +85,7 @@ describe('Timer Test', () => {
         <Timer initialTime={1} />
         <TimerStartButton />
       </>,
-      { wrapper: Wrapper },
+      {wrapper: Wrapper},
     );
     const startButton = screen.getByRole('button', {
       name: 'start',
