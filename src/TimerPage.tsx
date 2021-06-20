@@ -22,7 +22,7 @@ import useSWR from 'swr';
 
 const SHORT_BREAK = 300;
 const LONG_BREAK = 900;
-const WORK_TIME = 1500;
+const WORK_TIME = 2;
 
 //@ts-ignore
 const fetcher = (url) => axios.get(url).then(res => res.data);
@@ -37,6 +37,7 @@ function TimerPage() {
   );
 
   const todos = data || [];
+  const todosMap: Map<number, TodoItem> = new Map(todos.map(i => [i.id, i]));
   const [timer, setTimer] = useState<number>(WORK_TIME);
   const [breaking, setBreaking] = useState<boolean>(false);
   const [round, setRound] = useState<number>(1);
@@ -56,14 +57,15 @@ function TimerPage() {
       setBreaking(true);
       setRound((r) => r + 1);
 
-      if (currentTodo !== null) {
+      if (currentTodo !== null && todosMap.has(currentTodo)) {
+        const body = {sprintDone: todosMap.get(currentTodo)!.sprintDone + 1}
+        const headers = {
+          headers: {'Content-Type': 'application/json; charset=UTF-8'}
+        }
+
         axios.patch(`http://localhost:3000/todos/${currentTodo}`,
-          {sprintDone: todos[currentTodo].sprintDone + 1},
-          {
-            headers: {
-              'Content-Type': 'application/json; charset=UTF-8',
-            },
-          }
+          body,
+          headers
         );
       }
     }
@@ -72,20 +74,26 @@ function TimerPage() {
   const submitNewTodo = (form: TodoFormState) => {
     if (form.title === '' || form.sprint <= 0) return false;
     // replace with post todo
-    axios.post(`http://localhost:3000/todos`,
-      {
-        title: form.title,
-        sprintTotal: form.sprint,
-        sprintDone: 0,
-        todoDone: false,
+
+    const body = {
+      title: form.title,
+      sprintTotal: form.sprint,
+      sprintDone: 0,
+      todoDone: false,
+    }
+    const headers = {
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
       },
-      {
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-      }
+    }
+
+    axios.post(`http://localhost:3000/todos`,
+      body,
+      headers
     );
+
     setCreatingNewTodo(false);
+
     return true;
   };
 
@@ -95,35 +103,38 @@ function TimerPage() {
 
   const handleDeleteTodo = (todoId: number) => {
     // replace with delete todo
-    console.log('here');
     axios.delete(`http://localhost:3000/todos/${todoId}`);
   };
 
   const handleDoneTodo = (todoId: number) => {
     // replace patch todo
+    if (!todosMap.has(todoId))
+      throw new Error("todo does not exist error");
+
+    const body = {
+      todoDone: !(todosMap.get(todoId)!.todoDone),
+    }
     axios.patch(`http://localhost:3000/todos/${todoId}`,
-      {
-        todoDone: !todos[todoId].todoDone,
-      },
+      body
     );
   };
 
   const handleEditTodo = (todoId: number, form: TodoFormState) => {
     // replace patch todo
+    const body = {
+      title: form.title,
+      sprintTotal: form.sprint,
+    }
+    const headers = {
+      headers: {'Content-Type': 'application/json; charset=UTF-8', }
+    }
     axios.patch(`http://localhost:3000/todos/${todoId}`,
-      {
-        title: form.title,
-        sprintTotal: form.sprint,
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-      });
+      body,
+      headers
+    );
   };
 
   const openNewTodoForm = () => {
-    console.log('button clicked');
     setCreatingNewTodo(true);
   };
 
