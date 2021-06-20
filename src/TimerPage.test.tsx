@@ -1,7 +1,9 @@
 import React from 'react';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import {act, render, screen, waitFor} from '@testing-library/react';
 import TimerPage from './TimerPage';
 import userEvent from '@testing-library/user-event';
+
+jest.useFakeTimers();
 
 const WORK_TIME = 1500;
 const SHORT_BREAK = 300;
@@ -9,20 +11,28 @@ const SHORT_BREAK = 300;
 describe('TimerPage Test', () => {
   function passWorkTime() {
     //passTime(WORK_TIME);
+    /*
+    for (let i = 0; i < WORK_TIME; i++)
+      act(() => {
+        jest.advanceTimersByTime(1)
+      })
+      */
+
+    //act(() => {jest.advanceTimersByTime(WORK_TIME)})
   }
   function passShortBreak() {
     //passTime(SHORT_BREAK);
   }
 
-  it.only('should render new button for creating todo list', () => {
+  it('should render new button for creating todo list', () => {
     render(<TimerPage />);
-    screen.getByRole('button', { name: /new todo/i });
+    screen.getByRole('button', {name: /new todo/i});
   });
 
-  it.only('should render todo form when user clicks new todo button', () => {
+  it('should render todo form when user clicks new todo button', () => {
     render(<TimerPage />);
     userEvent.click(screen.getByText(/new todo/i));
-    screen.getByRole('button', { name: /save/i });
+    screen.getByRole('button', {name: /save/i});
     screen.getByLabelText(/title for new todo/i);
     screen.getByLabelText(/amount of sprint for new todo/i);
     screen.getByLabelText(/increase sprint/i);
@@ -35,22 +45,22 @@ describe('TimerPage Test', () => {
     userEvent.click(screen.getByText(/new todo/i));
     const titleInput = screen.getByLabelText(/title for new todo/i);
     const sprintUpButton = screen.getByLabelText(/increase sprint/i);
-    const saveButton = screen.getByRole('button', { name: /save/i });
+    const saveButton = screen.getByRole('button', {name: /save/i});
     userEvent.type(titleInput, 'New Todo');
     userEvent.click(sprintUpButton);
     userEvent.click(saveButton);
-    expect(screen.queryByRole('button', { name: /save/i })).to.not.exist;
-    expect(screen.queryByLabelText(/title for new todo/i)).to.not.exist;
-    expect(screen.queryByLabelText(/increase sprint/i)).to.not.exist;
-    expect(screen.queryByLabelText(/decrease sprint/i)).to.not.exist;
+    expect(screen.queryByRole('button', {name: /save/i})).toBeFalsy();
+    expect(screen.queryByLabelText(/title for new todo/i)).toBeFalsy();
+    expect(screen.queryByLabelText(/increase sprint/i)).toBeFalsy();
+    expect(screen.queryByLabelText(/decrease sprint/i)).toBeFalsy();
   });
 
-  it.only('should render new todo button when user cancle to create new todo', () => {
+  it('should render new todo button when user cancle to create new todo', () => {
     render(<TimerPage />);
     userEvent.click(screen.getByText(/new todo/i));
-    userEvent.click(screen.getByRole('button', { name: /cancel/i }));
+    userEvent.click(screen.getByRole('button', {name: /cancel/i}));
     screen.getByText(/new todo/i);
-    expect(screen.queryByRole('button', { name: /save/i })).toBeFalsy();
+    expect(screen.queryByRole('button', {name: /save/i})).toBeFalsy();
     expect(screen.queryByLabelText(/title for new todo/i)).toBeFalsy();
     expect(screen.queryByLabelText(/increase sprint/i)).toBeFalsy();
     expect(screen.queryByLabelText(/decrease sprint/i)).toBeFalsy();
@@ -65,16 +75,16 @@ describe('TimerPage Test', () => {
       /amount of sprint for new todo/i,
     ) as HTMLInputElement;
     userEvent.click(sprintUpButton);
-    expect(sprintSelection.value).to.equal('1');
+    expect(sprintSelection.value).toEqual('1');
     userEvent.click(sprintDownButton);
-    expect(sprintSelection.value).to.equal('0');
+    expect(sprintSelection.value).toEqual('0');
   });
 
-  it('should add new todo item when fill the title, sprint and clicks new button', () => {
+  it.skip('should add new todo item when fill the title, sprint and clicks new button', () => {
     render(<TimerPage />);
     userEvent.click(screen.getByText(/new todo/i));
     const newTitle = 'newTitle';
-    const saveFormButton = screen.getByRole('button', { name: /save/i });
+    const saveFormButton = screen.getByRole('button', {name: /save/i});
     const titleInput = screen.getByLabelText(/title for new todo/i);
     const sprintUpButton = screen.getByLabelText(/increase sprint/i);
     userEvent.type(titleInput, newTitle);
@@ -85,21 +95,21 @@ describe('TimerPage Test', () => {
     expect(screen.getByText(newTitle)).to.be.exist;
   });
 
-  it('should render breaking session after pomodoro session complete', () => {
+  it.skip('should render breaking session after pomodoro session complete', () => {
     render(<TimerPage />);
     const startButton = screen.getByRole('button', {
       name: 'start',
     });
     userEvent.click(startButton);
-    passWorkTime();
+    passWorkTime()
     // should query timer after time passed because it is re mounted using key props
-    const breakingTimer = screen.getByLabelText(/timer/i);
-    expect(breakingTimer.innerText).to.equal('05:00');
+    const timer: HTMLSpanElement = screen.getByLabelText('timer');
+    expect(timer).toHaveTextContent('05:00');
   });
 
-  it('should render long breaking session after 4 pomodoro session complete', () => {
+  it.skip('should render long breaking session after 4 pomodoro session complete', () => {
     render(<TimerPage />);
-    const startButton = screen.getByRole('button', { name: 'start' });
+    const startButton = screen.getByRole('button', {name: 'start'});
     userEvent.click(startButton);
     passWorkTime(); // 1 session
     passShortBreak();
@@ -112,11 +122,11 @@ describe('TimerPage Test', () => {
     expect(longBreakingTimer.innerText).to.equal('15:00');
   });
 
-  it('should increase done count when one sprint is done', async () => {
+  it.skip('should increase done count when one sprint is done', async () => {
     render(<TimerPage />);
     userEvent.click(screen.getByText(/new todo/i));
     const newTitle = 'newTitle';
-    const saveFormButton = screen.getByRole('button', { name: /save/i });
+    const saveFormButton = screen.getByRole('button', {name: /save/i});
     const titleInput = screen.getByLabelText(/title for new todo/i);
     const sprintUpButton = screen.getByLabelText(/increase sprint/i);
     userEvent.type(titleInput, newTitle);
@@ -124,17 +134,17 @@ describe('TimerPage Test', () => {
     userEvent.click(saveFormButton);
     userEvent.click(screen.getByText(newTitle));
     expect(screen.getByText(/0 \/ 1/i));
-    const startButton = screen.getByRole('button', { name: 'start' });
+    const startButton = screen.getByRole('button', {name: 'start'});
     userEvent.click(startButton);
     passWorkTime(); // 1 session
     await waitFor(() => expect(screen.getByText(/1 \/ 1/i)));
   });
 
-  it('should remove todos when clicks delete button', () => {
+  it.skip('should remove todos when clicks delete button', () => {
     render(<TimerPage />);
     userEvent.click(screen.getByText(/new todo/i));
     const newTitle = 'newTitle';
-    const saveFormButton = screen.getByRole('button', { name: /save/i });
+    const saveFormButton = screen.getByRole('button', {name: /save/i});
     const titleInput = screen.getByLabelText(/title for new todo/i);
     const sprintUpButton = screen.getByLabelText(/increase sprint/i);
     userEvent.type(titleInput, newTitle);
@@ -145,11 +155,11 @@ describe('TimerPage Test', () => {
     expect(screen.queryByText(newTitle)).to.not.exist;
   });
 
-  it('should render done when user clicks done button and it toggles', () => {
+  it.skip('should render done when user clicks done button and it toggles', () => {
     render(<TimerPage />);
     userEvent.click(screen.getByText(/new todo/i));
     const newTitle = 'newTitle';
-    const saveFormButton = screen.getByRole('button', { name: /save/i });
+    const saveFormButton = screen.getByRole('button', {name: /save/i});
     const titleInput = screen.getByLabelText(/title for new todo/i);
     const sprintUpButton = screen.getByLabelText(/increase sprint/i);
     userEvent.type(titleInput, newTitle);
@@ -162,11 +172,11 @@ describe('TimerPage Test', () => {
     expect(screen.queryByLabelText(/todo done/i)).to.not.exist;
   });
 
-  it('can edit todo item on the list by edit button interface', () => {
+  it.skip('can edit todo item on the list by edit button interface', () => {
     render(<TimerPage />);
     userEvent.click(screen.getByText(/new todo/i));
     const newTitle = 'newTitle';
-    const saveFormButton = screen.getByRole('button', { name: /save/i });
+    const saveFormButton = screen.getByRole('button', {name: /save/i});
     const titleInput = screen.getByLabelText(/title for new todo/i);
     const sprintUpButton = screen.getByLabelText(/increase sprint/i);
     userEvent.type(titleInput, newTitle);

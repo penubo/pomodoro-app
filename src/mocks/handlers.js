@@ -1,5 +1,5 @@
 // src/mocks/handlers.js
-import { rest } from 'msw';
+import {rest} from 'msw';
 
 export const handlers = [
   rest.post('/login', (req, res, ctx) => {
@@ -10,6 +10,19 @@ export const handlers = [
       // Respond with a 200 status code
       ctx.status(200),
     );
+  }),
+
+  rest.post('http://localhost:3000/todos', (req, res, ctx) => {
+    return res(
+      ctx.status(201),
+      ctx.json({
+        id: 80,
+        title: 'new todo with post',
+        sprintTotal: 5,
+        sprintDone: 0,
+        todoDone: false,
+      })
+    )
   }),
 
   rest.get('http://localhost:3000/todos', (req, res, ctx) => {

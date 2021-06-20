@@ -36,7 +36,6 @@ function TimerPage() {
     {refreshInterval: 1000},
   );
 
-  console.log('data: ', data, 'error: ', error);
   const todos = data || [];
   const [timer, setTimer] = useState<number>(WORK_TIME);
   const [breaking, setBreaking] = useState<boolean>(false);
