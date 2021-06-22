@@ -3,7 +3,6 @@ import {act, render, screen, waitFor} from '@testing-library/react';
 import TimerPage from './TimerPage';
 import userEvent from '@testing-library/user-event';
 
-jest.useFakeTimers();
 
 const WORK_TIME = 1500;
 const SHORT_BREAK = 300;
@@ -12,17 +11,51 @@ const BREAK_SEC = 300;
 
 describe('TimerPage Test', () => {
 
-  function passTimer(sec: number, offset?: number) {
-    const offsetSec = offset || 0;
-    act(() => {jest.advanceTimersByTime(1001 * (sec + offsetSec))})
-  }
+  describe('Timer functionality Test in TimerPage', () => {
 
-  function passWorkTime() {
-    passTimer(SPRINT_SEC, 0)
-  }
-  function passShortBreak() {
-    passTimer(BREAK_SEC, 0);
-  }
+    beforeAll(() => jest.useFakeTimers());
+    afterAll(() => jest.useRealTimers())
+
+    function passTimer(sec: number, offset?: number) {
+      const offsetSec = offset || 0;
+      act(() => {jest.advanceTimersByTime(1001 * (sec + offsetSec))})
+    }
+
+    function passWorkTime() {
+      passTimer(SPRINT_SEC, 0)
+    }
+    function passShortBreak() {
+      passTimer(BREAK_SEC, 0);
+    }
+
+    it('should render breaking session after pomodoro session complete', () => {
+      render(<TimerPage />);
+      const startButton = screen.getByRole('button', {
+        name: 'start',
+      });
+      userEvent.click(startButton);
+      passWorkTime();
+      // should query timer after time passed because it is re mounted using key props
+      const timer: HTMLSpanElement = screen.getByLabelText('timer');
+      expect(timer).toHaveTextContent('05:00');
+    });
+
+    it('should render long breaking session after 4 pomodoro session complete', () => {
+      render(<TimerPage />);
+      const startButton = screen.getByRole('button', {name: 'start'});
+      userEvent.click(startButton);
+      passWorkTime(); // 1 session
+      passShortBreak();
+      passWorkTime(); // 2 session
+      passShortBreak();
+      passWorkTime(); // 3 session
+      passShortBreak();
+      passWorkTime(); // 4 session
+      const timer: HTMLSpanElement = screen.getByLabelText('timer');
+      expect(timer).toHaveTextContent('15:00');
+    });
+
+  })
 
   it('should render new button for creating todo list', () => {
     render(<TimerPage />);
@@ -95,32 +128,6 @@ describe('TimerPage Test', () => {
     expect(screen.getByText(newTitle)).to.be.exist;
   });
 
-  it('should render breaking session after pomodoro session complete', () => {
-    render(<TimerPage />);
-    const startButton = screen.getByRole('button', {
-      name: 'start',
-    });
-    userEvent.click(startButton);
-    passWorkTime();
-    // should query timer after time passed because it is re mounted using key props
-    const timer: HTMLSpanElement = screen.getByLabelText('timer');
-    expect(timer).toHaveTextContent('05:00');
-  });
-
-  it('should render long breaking session after 4 pomodoro session complete', () => {
-    render(<TimerPage />);
-    const startButton = screen.getByRole('button', {name: 'start'});
-    userEvent.click(startButton);
-    passWorkTime(); // 1 session
-    passShortBreak();
-    passWorkTime(); // 2 session
-    passShortBreak();
-    passWorkTime(); // 3 session
-    passShortBreak();
-    passWorkTime(); // 4 session
-    const timer: HTMLSpanElement = screen.getByLabelText('timer');
-    expect(timer).toHaveTextContent('15:00');
-  });
 
   it.skip('should increase done count when one sprint is done', async () => {
     render(<TimerPage />);
@@ -194,11 +201,8 @@ describe('TimerPage Test', () => {
   });
 
   it('should render todos from the server response', async () => {
-
-    // Need to use jest real timers for swr library to properly fetch from msw
-    jest.useRealTimers()
-
     render(<TimerPage />)
+
     await screen.findByText(/first todo/i)
   })
 });
