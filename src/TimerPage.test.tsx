@@ -195,13 +195,10 @@ describe('TimerPage Test', () => {
 
   it('should render todos from the server response', async () => {
 
+    // Need to use jest real timers for swr library to properly fetch from msw
+    jest.useRealTimers()
+
     render(<TimerPage />)
-    // I couldn't figure out why but useSWR won't be triggered unless I put to onTimeout
-    const todo = await screen.findByText(/first todo/i, {}, {onTimeout: () => {}})
-    userEvent.click(todo);
-    expect(screen.queryByRole('button', {name: /save/i})).toBeTruthy();
-    expect(screen.queryByLabelText(/title for new todo/i)).toBeTruthy();
-    expect(screen.queryByLabelText(/increase sprint/i)).toBeTruthy();
-    expect(screen.queryByLabelText(/decrease sprint/i)).toBeTruthy();
+    await screen.findByText(/first todo/i)
   })
 });
