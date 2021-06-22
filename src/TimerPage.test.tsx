@@ -192,4 +192,16 @@ describe('TimerPage Test', () => {
     expect(screen.getByText(newTitle + editedTitle)).to.exist;
     expect(screen.getByText(/0 \/ 2/i)).to.exist;
   });
+
+  it('should render todos from the server response', async () => {
+
+    render(<TimerPage />)
+    // I couldn't figure out why but useSWR won't be triggered unless I put to onTimeout
+    const todo = await screen.findByText(/first todo/i, {}, {onTimeout: () => {}})
+    userEvent.click(todo);
+    expect(screen.queryByRole('button', {name: /save/i})).toBeTruthy();
+    expect(screen.queryByLabelText(/title for new todo/i)).toBeTruthy();
+    expect(screen.queryByLabelText(/increase sprint/i)).toBeTruthy();
+    expect(screen.queryByLabelText(/decrease sprint/i)).toBeTruthy();
+  })
 });
