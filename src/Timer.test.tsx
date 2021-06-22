@@ -7,9 +7,10 @@ import Timer, {
   TimerStopButton,
 } from './Timer';
 
-jest.useFakeTimers();
-
 describe('Timer Test', () => {
+  beforeAll(() => jest.useFakeTimers());
+  afterAll(() => jest.useRealTimers());
+
   const Wrapper = (props: any) => {
     return <TimerProvider {...props} />;
   };
