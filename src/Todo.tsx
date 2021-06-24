@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import './Todo.scss';
-import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { TodoList } from 'types/todo';
+import {faTrashAlt, faEdit} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import type {TodoList} from 'types/todo';
 import TodoFormProvider, {
   CancelFormButton,
   DecreaseSprintButton,
@@ -11,7 +11,7 @@ import TodoFormProvider, {
   SaveFormButton,
   TitleField,
 } from './TodoForm';
-import type { TodoFormState } from 'types/todoform';
+import type {TodoFormState} from 'types/todoform';
 
 interface TodoProps {
   todos: TodoList;
@@ -58,7 +58,7 @@ function Todo({
     setEditingTodo(null);
   };
 
-  const handleSubmitEditForm = (todoId: number) => (form: TodoFormState) => {
+  const handleSubmitEditForm = (todoId: number) => async (form: TodoFormState) => {
     setEditingTodo(null);
     if (onEditTodo) {
       onEditTodo(todoId, form);

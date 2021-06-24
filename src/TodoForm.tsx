@@ -1,6 +1,6 @@
-import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { createContext, useContext, useReducer } from 'react';
+import {faCaretDown, faCaretUp} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import React, {createContext, useContext, useReducer} from 'react';
 import type {
   TodoFormAction,
   TodoFormContextValue,
@@ -13,15 +13,15 @@ const TodoFormContext = createContext<TodoFormContextValue | null>(null);
 function formReducer(state: TodoFormState, action: TodoFormAction) {
   switch (action.type) {
     case 'decrease-sprint':
-      return { ...state, sprint: state.sprint - 1 };
+      return {...state, sprint: state.sprint - 1};
     case 'increase-sprint':
-      return { ...state, sprint: state.sprint + 1 };
+      return {...state, sprint: state.sprint + 1};
     case 'new-sprint':
-      return { ...state, sprint: action.sprint };
+      return {...state, sprint: action.sprint};
     case 'edit-title':
-      return { ...state, title: action.newTitle };
+      return {...state, title: action.newTitle};
     case 'reset':
-      return { title: '', sprint: 0 };
+      return {title: '', sprint: 0};
     default:
       throw new Error('no action type found in formReducer');
   }
@@ -29,28 +29,28 @@ function formReducer(state: TodoFormState, action: TodoFormAction) {
 
 function TodoFormProvider({
   children,
-  initialForm = { title: '', sprint: 0 },
+  initialForm = {title: '', sprint: 0},
   onSubmit,
   onCancel,
 }: {
   children: React.ReactNode;
   initialForm?: TodoFormState;
-  onSubmit: (form: TodoFormState) => boolean;
+  onSubmit: (form: TodoFormState) => Promise<boolean>;
   onCancel?: () => void;
 }) {
   const [form, dispatch] = useReducer(formReducer, initialForm);
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     onSubmit(form);
-    dispatch({ type: 'reset' });
+    dispatch({type: 'reset'});
   };
   const cancelForm = (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (onCancel) onCancel();
-    dispatch({ type: 'reset' });
+    dispatch({type: 'reset'});
   };
   return (
-    <TodoFormContext.Provider value={{ form, dispatch, cancelForm }}>
+    <TodoFormContext.Provider value={{form, dispatch, cancelForm}}>
       <form onSubmit={handleSubmit}>{children}</form>
     </TodoFormContext.Provider>
   );
@@ -73,7 +73,7 @@ function SaveFormButton() {
 }
 
 function CancelFormButton() {
-  const { cancelForm } = useTodoForm();
+  const {cancelForm} = useTodoForm();
   return (
     <button className="form-submit-btn" type="button" onClick={cancelForm}>
       cancel
@@ -83,13 +83,13 @@ function CancelFormButton() {
 
 function TitleField() {
   const {
-    form: { title },
+    form: {title},
     dispatch,
   } = useTodoForm();
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const newTitle = e.target.value;
-    dispatch({ type: 'edit-title', newTitle });
+    dispatch({type: 'edit-title', newTitle});
   };
   return (
     <input
@@ -106,12 +106,12 @@ function TitleField() {
 
 function EstimationSprintInput() {
   const {
-    form: { sprint },
+    form: {sprint},
     dispatch,
   } = useTodoForm();
   const handleSprintChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newSprint = Number(e.target.value);
-    dispatch({ type: 'new-sprint', sprint: newSprint });
+    dispatch({type: 'new-sprint', sprint: newSprint});
   };
   return (
     <input
@@ -129,9 +129,9 @@ function EstimationSprintInput() {
 }
 
 function IncreaseSprintButton() {
-  const { dispatch } = useTodoForm();
+  const {dispatch} = useTodoForm();
   const handleSprintUp = () => {
-    dispatch({ type: 'increase-sprint' });
+    dispatch({type: 'increase-sprint'});
   };
   return (
     <button
@@ -147,11 +147,11 @@ function IncreaseSprintButton() {
 
 function DecreaseSprintButton() {
   const {
-    form: { sprint },
+    form: {sprint},
     dispatch,
   } = useTodoForm();
   const handleSprintDown = () => {
-    if (sprint > 0) dispatch({ type: 'decrease-sprint' });
+    if (sprint > 0) dispatch({type: 'decrease-sprint'});
   };
   return (
     <button

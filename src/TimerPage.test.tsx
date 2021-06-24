@@ -2,6 +2,8 @@ import React from 'react';
 import {act, render, screen, waitFor} from '@testing-library/react';
 import TimerPage from './TimerPage';
 import userEvent from '@testing-library/user-event';
+import {server, rest} from './mocks/server';
+import {cache} from 'swr'
 
 
 const WORK_TIME = 1500;
@@ -10,6 +12,7 @@ const SPRINT_SEC = 1500;
 const BREAK_SEC = 300;
 
 describe('TimerPage Test', () => {
+  afterEach(() => cache.clear())
 
   describe('Timer functionality Test in TimerPage', () => {
 
@@ -73,7 +76,7 @@ describe('TimerPage Test', () => {
     expect(screen.queryByText(/new todo/i)).toBeFalsy();
   });
 
-  it('hides New todo form after user save a new todo', () => {
+  it('hides New todo form after user save a new todo', async () => {
     render(<TimerPage />);
     userEvent.click(screen.getByText(/new todo/i));
     const titleInput = screen.getByLabelText(/title for new todo/i);
@@ -82,7 +85,7 @@ describe('TimerPage Test', () => {
     userEvent.type(titleInput, 'New Todo');
     userEvent.click(sprintUpButton);
     userEvent.click(saveButton);
-    expect(screen.queryByRole('button', {name: /save/i})).toBeFalsy();
+    await waitFor(() => expect(screen.queryByRole('button', {name: /save/i})).toBeFalsy());
     expect(screen.queryByLabelText(/title for new todo/i)).toBeFalsy();
     expect(screen.queryByLabelText(/increase sprint/i)).toBeFalsy();
     expect(screen.queryByLabelText(/decrease sprint/i)).toBeFalsy();
@@ -113,7 +116,7 @@ describe('TimerPage Test', () => {
     expect(sprintSelection.value).toEqual('0');
   });
 
-  it.skip('should add new todo item when fill the title, sprint and clicks new button', () => {
+  it('should add new todo item when fill the title, sprint and clicks new button', async () => {
     render(<TimerPage />);
     userEvent.click(screen.getByText(/new todo/i));
     const newTitle = 'newTitle';
@@ -122,10 +125,30 @@ describe('TimerPage Test', () => {
     const sprintUpButton = screen.getByLabelText(/increase sprint/i);
     userEvent.type(titleInput, newTitle);
     userEvent.click(sprintUpButton);
+    server.use(
+      rest.post('/todos', async (req, res, ctx) => {
+        return res(ctx.status(201), ctx.json({
+          title: 'newTitle',
+          sprintTotal: 1,
+          sprintDone: 0,
+          todoDone: false,
+        }));
+      }),
+      rest.get('/todos', async (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json([
+          {
+            id: 100,
+            title: 'newTitle',
+            sprintTotal: 1,
+            sprintDone: 0,
+            todoDone: false,
+          }
+        ]));
+      }),
+    )
     userEvent.click(saveFormButton);
-    const todo = screen.getByLabelText(/todo-item/i);
-    expect(todo).to.be.exist;
-    expect(screen.getByText(newTitle)).to.be.exist;
+    const todo = await screen.findByText(/newtitle/i);
+    expect(todo).toBeTruthy();
   });
 
 

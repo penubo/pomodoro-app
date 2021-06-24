@@ -18,7 +18,7 @@ import type {TodoFormState} from 'types/todoform';
 import type {TodoItem} from 'types/todo';
 import './TodoForm.scss';
 import axios from 'axios';
-import useSWR from 'swr';
+import useSWR, {mutate} from 'swr';
 
 const SHORT_BREAK = 300;
 const LONG_BREAK = 900;
@@ -33,7 +33,6 @@ function TimerPage() {
   const {data, error} = useSWR<Array<TodoItem>>(
     'http://localhost:3000/todos',
     fetcher,
-    {refreshInterval: 1000},
   );
 
   const todos = data || [];
@@ -71,7 +70,7 @@ function TimerPage() {
     }
   };
 
-  const submitNewTodo = (form: TodoFormState) => {
+  const submitNewTodo = async (form: TodoFormState) => {
     if (form.title === '' || form.sprint <= 0) return false;
     // replace with post todo
 
@@ -87,10 +86,19 @@ function TimerPage() {
       },
     }
 
-    axios.post(`http://localhost:3000/todos`,
+    let newData: Array<TodoItem> = [{...body, id: -1}];
+    if (data && data.length > 0) {
+      newData = [...data, ...newData]
+    }
+    mutate('http://localhost:3000/todos', newData, false);
+    console.log(data)
+
+    await axios.post(`http://localhost:3000/todos`,
       body,
       headers
     );
+
+    mutate('http://localhost:3000/todos');
 
     setCreatingNewTodo(false);
 

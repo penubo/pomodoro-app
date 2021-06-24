@@ -16,7 +16,6 @@ export const handlers = [
     return res(
       ctx.status(201),
       ctx.json({
-        id: 80,
         title: 'new todo with post',
         sprintTotal: 5,
         sprintDone: 0,
