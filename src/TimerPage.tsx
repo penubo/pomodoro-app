@@ -90,6 +90,7 @@ function TimerPage() {
     if (data && data.length > 0) {
       newData = [...data, ...newData]
     }
+
     mutate('http://localhost:3000/todos', newData, false);
     console.log(data)
 
@@ -109,9 +110,15 @@ function TimerPage() {
     setCurrentTodo(newTodo);
   };
 
-  const handleDeleteTodo = (todoId: number) => {
+  const handleDeleteTodo = async (todoId: number) => {
     // replace with delete todo
-    axios.delete(`http://localhost:3000/todos/${todoId}`);
+    let newData: Array<TodoItem> = []
+    if (data && data.length > 0) {
+      newData = [...data.filter(x => x.id !== todoId)]
+    }
+    mutate('http://localhost:3000/todos', newData, false);
+    await axios.delete(`http://localhost:3000/todos/${todoId}`);
+    mutate('http://localhost:3000/todos')
   };
 
   const handleDoneTodo = (todoId: number) => {

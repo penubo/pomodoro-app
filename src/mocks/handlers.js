@@ -24,6 +24,12 @@ export const handlers = [
     )
   }),
 
+  rest.delete('http://localhost:3000/todos/:todoId', (req, res, ctx) => {
+    return res(
+      ctx.status(204)
+    );
+  }),
+
   rest.get('http://localhost:3000/todos', (req, res, ctx) => {
     // If authenticated, return a mocked user details
     return res(

@@ -16,6 +16,7 @@ describe('TimerPage Test', () => {
 
   describe('Timer functionality Test in TimerPage', () => {
 
+    afterEach(() => cache.clear())
     beforeAll(() => jest.useFakeTimers());
     afterAll(() => jest.useRealTimers())
 
@@ -56,6 +57,24 @@ describe('TimerPage Test', () => {
       passWorkTime(); // 4 session
       const timer: HTMLSpanElement = screen.getByLabelText('timer');
       expect(timer).toHaveTextContent('15:00');
+    });
+
+    it.skip('should increase done count when one sprint is done', async () => {
+      jest.useRealTimers();
+      const {debug} = render(<TimerPage />);
+      const button = await screen.findByText(/first todo/i);
+      userEvent.click(button);
+      expect(screen.getByText(/0 \/ 1/i));
+      jest.useFakeTimers()
+      const startButton = screen.getByRole('button', {name: 'start'});
+      userEvent.click(startButton);
+      passWorkTime(); // 1 session
+      passWorkTime(); // 1 session
+      passWorkTime(); // 1 session
+      debug();
+      const timer: HTMLSpanElement = screen.getByLabelText('timer');
+      expect(timer).toHaveTextContent('05:00');
+      await waitFor(() => expect(screen.getByText(/1 \/ 1/i)));
     });
 
   })
@@ -119,7 +138,7 @@ describe('TimerPage Test', () => {
   it('should add new todo item when fill the title, sprint and clicks new button', async () => {
     render(<TimerPage />);
     userEvent.click(screen.getByText(/new todo/i));
-    const newTitle = 'newTitle';
+    const newTitle = 'Newly Created Todo';
     const saveFormButton = screen.getByRole('button', {name: /save/i});
     const titleInput = screen.getByLabelText(/title for new todo/i);
     const sprintUpButton = screen.getByLabelText(/increase sprint/i);
@@ -128,7 +147,7 @@ describe('TimerPage Test', () => {
     server.use(
       rest.post('/todos', async (req, res, ctx) => {
         return res(ctx.status(201), ctx.json({
-          title: 'newTitle',
+          title: newTitle,
           sprintTotal: 1,
           sprintDone: 0,
           todoDone: false,
@@ -138,7 +157,7 @@ describe('TimerPage Test', () => {
         return res(ctx.status(200), ctx.json([
           {
             id: 100,
-            title: 'newTitle',
+            title: newTitle,
             sprintTotal: 1,
             sprintDone: 0,
             todoDone: false,
@@ -147,24 +166,10 @@ describe('TimerPage Test', () => {
       }),
     )
     userEvent.click(saveFormButton);
-    const todo = await screen.findByText(/newtitle/i);
-    expect(todo).toBeTruthy();
+    await screen.findByText(/newly created todo/i);
   });
 
-
-  it.skip('should increase done count when one sprint is done', async () => {
-    render(<TimerPage />);
-    const button = await screen.findByText(/first todo/i);
-
-    userEvent.click(button);
-    expect(screen.getByText(/0 \/ 1/i));
-    const startButton = screen.getByRole('button', {name: 'start'});
-    userEvent.click(startButton);
-    passWorkTime(); // 1 session
-    await waitFor(() => expect(screen.getByText(/1 \/ 1/i)));
-  });
-
-  it.skip('should remove todos when clicks delete button', () => {
+  it('should remove todos when clicks delete button', () => {
     render(<TimerPage />);
     userEvent.click(screen.getByText(/new todo/i));
     const newTitle = 'newTitle';
@@ -176,7 +181,7 @@ describe('TimerPage Test', () => {
     userEvent.click(saveFormButton);
     const deleteButton = screen.getByLabelText(/delete/i);
     userEvent.click(deleteButton);
-    expect(screen.queryByText(newTitle)).to.not.exist;
+    expect(screen.queryByText(newTitle)).toBeFalsy();
   });
 
   it.skip('should render done when user clicks done button and it toggles', () => {
