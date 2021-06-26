@@ -121,7 +121,7 @@ function TimerPage() {
     mutate('http://localhost:3000/todos')
   };
 
-  const handleDoneTodo = (todoId: number) => {
+  const handleDoneTodo = async (todoId: number) => {
     // replace patch todo
     if (!todosMap.has(todoId))
       throw new Error("todo does not exist error");
@@ -129,9 +129,17 @@ function TimerPage() {
     const body = {
       todoDone: !(todosMap.get(todoId)!.todoDone),
     }
-    axios.patch(`http://localhost:3000/todos/${todoId}`,
+
+    let newData: Array<TodoItem> = []
+    if (data && data.length > 0) {
+      newData = [...data.filter(x => x.id !== todoId), {...todosMap.get(todoId)!, todoDone: !(todosMap.get(todoId)!.todoDone)}]
+    }
+
+    mutate('http://localhost:3000/todos', newData, false);
+    await axios.patch(`http://localhost:3000/todos/${todoId}`,
       body
     );
+    mutate('http://localhost:3000/todos');
   };
 
   const handleEditTodo = (todoId: number, form: TodoFormState) => {

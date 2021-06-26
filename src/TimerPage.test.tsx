@@ -184,21 +184,14 @@ describe('TimerPage Test', () => {
     expect(screen.queryByText(newTitle)).toBeFalsy();
   });
 
-  it.skip('should render done when user clicks done button and it toggles', () => {
+  it('should render done when user clicks done button and it toggles', async () => {
     render(<TimerPage />);
-    userEvent.click(screen.getByText(/new todo/i));
-    const newTitle = 'newTitle';
-    const saveFormButton = screen.getByRole('button', {name: /save/i});
-    const titleInput = screen.getByLabelText(/title for new todo/i);
-    const sprintUpButton = screen.getByLabelText(/increase sprint/i);
-    userEvent.type(titleInput, newTitle);
-    userEvent.click(sprintUpButton);
-    userEvent.click(saveFormButton);
-    const todoNotDoneIconButton = screen.getByLabelText(/todo finish switch/i);
+    const todoNotDoneIconButtons = await screen.findAllByLabelText(/todo finish switch/i);
+    const todoNotDoneIconButton = todoNotDoneIconButtons[0]
     userEvent.click(todoNotDoneIconButton);
-    expect(screen.getByLabelText(/todo done/i)).to.exist;
+    await waitFor(() => expect(screen.getByLabelText(/todo done/i)).toBeTruthy())
     userEvent.click(todoNotDoneIconButton);
-    expect(screen.queryByLabelText(/todo done/i)).to.not.exist;
+    expect(screen.queryByLabelText(/todo done/i)).toBeFalsy();
   });
 
   it.skip('can edit todo item on the list by edit button interface', () => {

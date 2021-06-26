@@ -30,6 +30,25 @@ export const handlers = [
     );
   }),
 
+  rest.options('http://localhost:3000/todos/:todoId', (req, res, ctx) => {
+    return res(
+      ctx.status(204)
+    );
+  }),
+
+  rest.patch('http://localhost:3000/todos/:todoId', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: 67,
+        title: 'First Todo',
+        sprintTotal: 1,
+        sprintDone: 0,
+        todoDone: true,
+      })
+    )
+  }),
+
   rest.get('http://localhost:3000/todos', (req, res, ctx) => {
     // If authenticated, return a mocked user details
     return res(
