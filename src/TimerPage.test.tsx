@@ -6,15 +6,12 @@ import {server, rest} from './mocks/server';
 import {cache} from 'swr'
 
 
-const WORK_TIME = 1500;
-const SHORT_BREAK = 300;
-const SPRINT_SEC = 1500;
-const BREAK_SEC = 300;
-
 describe('TimerPage Test', () => {
   afterEach(() => cache.clear())
 
   describe('Timer functionality Test in TimerPage', () => {
+    const SPRINT_SEC = 1500;
+    const BREAK_SEC = 300;
 
     afterEach(() => cache.clear())
     beforeAll(() => jest.useFakeTimers());
@@ -58,25 +55,6 @@ describe('TimerPage Test', () => {
       const timer: HTMLSpanElement = screen.getByLabelText('timer');
       expect(timer).toHaveTextContent('15:00');
     });
-
-    it.skip('should increase done count when one sprint is done', async () => {
-      jest.useRealTimers();
-      const {debug} = render(<TimerPage />);
-      const button = await screen.findByText(/first todo/i);
-      userEvent.click(button);
-      expect(screen.getByText(/0 \/ 1/i));
-      jest.useFakeTimers()
-      const startButton = screen.getByRole('button', {name: 'start'});
-      userEvent.click(startButton);
-      passWorkTime(); // 1 session
-      passWorkTime(); // 1 session
-      passWorkTime(); // 1 session
-      debug();
-      const timer: HTMLSpanElement = screen.getByLabelText('timer');
-      expect(timer).toHaveTextContent('05:00');
-      await waitFor(() => expect(screen.getByText(/1 \/ 1/i)));
-    });
-
   })
 
   it('should render new button for creating todo list', () => {
@@ -193,37 +171,4 @@ describe('TimerPage Test', () => {
     userEvent.click(todoNotDoneIconButton);
     expect(screen.queryByLabelText(/todo done/i)).toBeFalsy();
   });
-
-  it.skip('can edit todo item on the list by edit button interface', () => {
-    render(<TimerPage />);
-    userEvent.click(screen.getByText(/new todo/i));
-    const newTitle = 'newTitle';
-    const saveFormButton = screen.getByRole('button', {name: /save/i});
-    const titleInput = screen.getByLabelText(/title for new todo/i);
-    const sprintUpButton = screen.getByLabelText(/increase sprint/i);
-    userEvent.type(titleInput, newTitle);
-    userEvent.click(sprintUpButton);
-    userEvent.click(saveFormButton);
-    const editTodoButton = screen.getByLabelText(/edit/i);
-    userEvent.click(editTodoButton);
-    const editTodoTitleInput =
-      screen.getAllByLabelText(/title for new todo/i)[0];
-    const editTodoSprintUpButton =
-      screen.getAllByLabelText(/increase sprint/i)[0];
-    const editedTitle = ' edited';
-    const saveEditTodoButton = screen.getAllByRole('button', {
-      name: /save/i,
-    })[0];
-    userEvent.type(editTodoTitleInput, editedTitle);
-    userEvent.click(editTodoSprintUpButton);
-    userEvent.click(saveEditTodoButton);
-    expect(screen.getByText(newTitle + editedTitle)).to.exist;
-    expect(screen.getByText(/0 \/ 2/i)).to.exist;
-  });
-
-  it('should render todos from the server response', async () => {
-    render(<TimerPage />)
-
-    await screen.findByText(/first todo/i)
-  })
 });
