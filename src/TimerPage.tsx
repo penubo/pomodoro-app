@@ -43,7 +43,7 @@ function TimerPage() {
   const [currentTodo, setCurrentTodo] = useState<number | null>(null);
   const [creatingNewTodo, setCreatingNewTodo] = useState<boolean>(false);
 
-  const handleTimerEnd = () => {
+  const handleTimerEnd = async () => {
     if (breaking) {
       setTimer(1500);
       setBreaking(false);
@@ -62,10 +62,19 @@ function TimerPage() {
           headers: {'Content-Type': 'application/json; charset=UTF-8'}
         }
 
-        axios.patch(`http://localhost:3000/todos/${currentTodo}`,
+        let newData: Array<TodoItem> = []
+        if (data && data.length > 0) {
+          newData = [...data.filter(x => x.id !== currentTodo), {...todosMap.get(currentTodo)!, sprintDone: todosMap.get(currentTodo)!.sprintDone + 1}]
+        }
+
+        mutate('http://localhost:3000/todos', newData, false);
+
+        await axios.patch(`http://localhost:3000/todos/${currentTodo}`,
           body,
           headers
         );
+
+        mutate('http://localhost:3000/todos');
       }
     }
   };
@@ -142,7 +151,7 @@ function TimerPage() {
     mutate('http://localhost:3000/todos');
   };
 
-  const handleEditTodo = (todoId: number, form: TodoFormState) => {
+  const handleEditTodo = async (todoId: number, form: TodoFormState) => {
     // replace patch todo
     const body = {
       title: form.title,
@@ -151,10 +160,19 @@ function TimerPage() {
     const headers = {
       headers: {'Content-Type': 'application/json; charset=UTF-8', }
     }
-    axios.patch(`http://localhost:3000/todos/${todoId}`,
+    let newData: Array<TodoItem> = []
+    if (data && data.length > 0) {
+      newData = [...data.filter(x => x.id !== todoId), {...todosMap.get(todoId)!, title: form.title, sprintTotal: form.sprint}]
+    }
+
+    mutate('http://localhost:3000/todos', newData, false);
+
+    await axios.patch(`http://localhost:3000/todos/${todoId}`,
       body,
       headers
     );
+
+    mutate('http://localhost:3000/todos')
   };
 
   const openNewTodoForm = () => {
