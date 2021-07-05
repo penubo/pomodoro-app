@@ -24,8 +24,7 @@ const SHORT_BREAK = 300;
 const LONG_BREAK = 900;
 const WORK_TIME = 1500;
 
-//@ts-ignore
-const fetcher = (url) => axios.get(url).then(res => res.data);
+const fetcher = (url: string) => axios.get(url).then(res => res.data);
 
 function TimerPage() {
   // replace get all todos
