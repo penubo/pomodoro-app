@@ -30,7 +30,10 @@ const fetcher = (url: string) => axios.get(url).then(res => res.data);
 function TimerPage() {
   // replace get all todos
   //const [todos, setTodos] = useState<Array<TodoItem>>([]);
-  const {data, error, createNewTodo} = useTodos();
+  // TODO: Replace todos: data to todos
+  // It couldn't be achieved due to the service dependencies.
+  // Every service function should be moduled into useTodos hook.
+  const {todos: data, error, createNewTodo} = useTodos();
 
   const todos = data || [];
   const todosMap: Map<number, TodoItem> = new Map(todos.map(i => [i.id, i]));
@@ -80,13 +83,13 @@ function TimerPage() {
     if (form.title === '' || form.sprint <= 0) return false;
     // replace with post todo
 
-    const body = {
+    const newTodoData = {
       title: form.title,
       sprintTotal: form.sprint,
       sprintDone: 0,
       todoDone: false,
     }
-    createNewTodo(body);
+    createNewTodo(newTodoData);
     setCreatingNewTodo(false);
     return true;
   };
