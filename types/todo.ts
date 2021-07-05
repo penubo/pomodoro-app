@@ -8,4 +8,4 @@ type TodoItem = {
 
 type TodoList = Array<TodoItem>;
 
-export { TodoItem, TodoList };
+export {TodoItem, TodoList};

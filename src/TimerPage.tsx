@@ -19,6 +19,7 @@ import type {TodoItem} from 'types/todo';
 import './TodoForm.scss';
 import axios from 'axios';
 import useSWR, {mutate} from 'swr';
+import useTodos from './hooks/useTodos';
 
 const SHORT_BREAK = 300;
 const LONG_BREAK = 900;
@@ -29,10 +30,7 @@ const fetcher = (url: string) => axios.get(url).then(res => res.data);
 function TimerPage() {
   // replace get all todos
   //const [todos, setTodos] = useState<Array<TodoItem>>([]);
-  const {data, error} = useSWR<Array<TodoItem>>(
-    'http://localhost:3000/todos',
-    fetcher,
-  );
+  const {data, error, createNewTodo} = useTodos();
 
   const todos = data || [];
   const todosMap: Map<number, TodoItem> = new Map(todos.map(i => [i.id, i]));
@@ -88,29 +86,8 @@ function TimerPage() {
       sprintDone: 0,
       todoDone: false,
     }
-    const headers = {
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    }
-
-    let newData: Array<TodoItem> = [{...body, id: -1}];
-    if (data && data.length > 0) {
-      newData = [...data, ...newData]
-    }
-
-    mutate('http://localhost:3000/todos', newData, false);
-    console.log(data)
-
-    await axios.post(`http://localhost:3000/todos`,
-      body,
-      headers
-    );
-
-    mutate('http://localhost:3000/todos');
-
+    createNewTodo(body);
     setCreatingNewTodo(false);
-
     return true;
   };
 
